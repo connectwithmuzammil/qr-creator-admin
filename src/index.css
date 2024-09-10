@@ -1,13 +1,85 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600;700&display=swap");
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
+}
+.error {
+  font-family: "poppins", sans-serif;
+  font-size: 15px;
+  color: red;
+  margin-top: 4px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.btn-next .next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Add some spacing between the spinner and text */
+  padding: 10px 20px;
+  position: relative;
+}
+
+.loading-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-next {
+  display: flex;
+  align-items: center;
+}
+
+.btn-next button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 25px;
+  padding: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff;
+  --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+  mask: var(--_m);
+  -webkit-mask-composite: source-out;
+  mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875em;
+}
+
+.input-comp-error {
+  border: 2px solid red;
+}
+
+.error-message-input-comp {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
 }
