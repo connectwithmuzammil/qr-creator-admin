@@ -1,0 +1,10 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" fillRule="evenodd">
+        <rect stroke="#595959" fill="#FFF" transform="rotate(-180 16 16)" x=".5" y="2.5" width="31" height="27" rx="2"/>
+        <path d="M2 29.5c-.414 0-.79-.168-1.06-.44A1.495 1.495 0 0 1 .5 28v-4.5h31V28c0 .414-.168.79-.44 1.06-.27.272-.646.44-1.06.44z" stroke="#595959" fill="#F2F2F2"/>
+        <rect fill="#595959" transform="rotate(-180 24 26.5)" x="23" y="26" width="2" height="1" rx=".5"/>
+        <rect fill="#595959" transform="rotate(-180 16.5 26.5)" x="14" y="26" width="5" height="1" rx=".5"/>
+        <rect fill="#595959" transform="rotate(-180 9.5 26.5)" x="7" y="26" width="5" height="1" rx=".5"/>
+        <path d="M19.238 13.842c-.075.478-.154.557-.25.605l-5.764 2.882a.498.498 0 0 1-.62-.143l-.104-6.068a.498.498 0 0 1 .405-.49l6.083 2.925c.123.062.21.167.25.289z" stroke="#595959" fill="#F2F2F2"/>
+    </g>
+</svg>

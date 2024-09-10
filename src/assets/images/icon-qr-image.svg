@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#595959" fill="none" fillRule="evenodd">
+        <rect fill="#F2F2F2" x="3.5" y="4.5" width="27" height="21" rx="2"/>
+        <rect fill="#FFF" x="1.5" y="6.5" width="27" height="21" rx="2"/>
+        <g transform="translate(1 6)">
+            <rect fill="#FFF" x=".5" y=".5" width="27" height="21" rx="2"/>
+            <path d="m8.223 6.796 7.859 8.94 6.128-4.085 5.29 5.628V20c0 .414-.168.79-.44 1.06-.27.272-.646.44-1.06.44H2c-.414 0-.79-.168-1.06-.44A1.495 1.495 0 0 1 .5 20v-2.754l7.723-10.45z" fill="#F2F2F2"/>
+            <circle fill="#F2F2F2" cx="21" cy="5" r="2.5"/>
+        </g>
+    </g>
+</svg>

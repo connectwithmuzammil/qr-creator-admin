@@ -1,0 +1,335 @@
+.loginModal {
+}
+.loginModal .modal-content {
+  background-color: #fcfcfc;
+}
+.loginModal .modal-lg {
+  max-width: 435px;
+  margin-inline: auto;
+}
+.loginModal.forgot .modal-lg {
+  max-width: 350px;
+  margin-inline: auto;
+}
+.loginModal .modal-header {
+  border: none;
+}
+.loginModal .modal-header .modal-title h4 {
+  font-size: 24px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000000;
+}
+.loginModal .modal-body {
+  padding-bottom: 50px;
+}
+.loginModal .modal-body .form-container {
+}
+.loginModal .modal-body .form-container .input-wrap {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.loginModal .modal-body .form-container .input-wrap .wrap {
+  position: relative;
+}
+.loginModal .modal-body .form-container .input-wrap .wrap input {
+  position: relative;
+}
+.loginModal .modal-body .form-container .input-wrap .wrap svg {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  right: 0;
+  cursor: pointer;
+}
+.loginModal .modal-body .form-container .input-wrap label {
+  font-size: 16px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000000;
+  font-weight: 500;
+}
+.loginModal .modal-body .form-container .input-wrap input {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #bfbfbf;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  transition: border 0.2s ease-in-out;
+  outline: none;
+}
+.loginModal .modal-body .form-container .forgot-con {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.loginModal .modal-body .form-container .forgot-con p {
+  margin: 0;
+  font-size: 16px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000000;
+  font-weight: 500;
+}
+.loginModal .modal-body .form-container .forgot-con p span {
+  color: #e0201c;
+  cursor: pointer;
+}
+
+.loginModal .modal-body .form-container .line-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.loginModal .modal-body .form-container .line-container .line {
+  flex: 1;
+  border: none;
+  border-top: 1px solid black;
+  margin: 0 10px;
+}
+
+.loginModal .modal-body .form-container .line-container .text {
+  white-space: nowrap;
+}
+.loginModal .modal-body .form-container .btn-wrapper {
+  text-align: center;
+  margin-bottom: 12px;
+  margin-top: 35px;
+}
+.loginModal .modal-body .form-container .btn-wrapper button {
+  border: none;
+  outline: none;
+  background: #e0201c;
+  padding: 0.7rem 1rem;
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 600;
+  /* min-width: 300px; */
+  width: 100%;
+}
+.loginModal .modal-body .form-container .google-con {
+  width: 100%;
+  height: 2.5rem;
+  border: 1px solid #bfbfbf;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.1s linear;
+  cursor: pointer;
+  margin-bottom: 25px;
+}
+.loginModal .modal-body .form-container .google-con p {
+  margin: 0;
+  font-size: 16px;
+  color: #8c8c8c;
+  font-family: "Nunito Sans", sans-serif;
+}
+.loginModal .modal-body .form-container .google-con svg {
+  font-size: 25px;
+}
+
+.loginModal .modal-body .form-container .signup-con {
+  text-align: center;
+}
+.loginModal .modal-body .form-container .signup-con p {
+  margin: 0;
+  font-size: 16px;
+  color: #000000;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 500;
+}
+.loginModal .modal-body .form-container .signup-con p span {
+  color: #e0201c;
+  cursor: pointer;
+}
+.loginModal .modal-body .form-container .terms-con {
+  text-align: center;
+  margin-top: 25px;
+}
+.loginModal .modal-body .form-container .terms-con p {
+  margin: 0;
+  font-size: 16px;
+  color: #000000;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 500;
+}
+.loginModal .modal-body .form-container .terms-con p span {
+  color: #e0201c;
+  cursor: pointer;
+}
+
+/********************************** Edit Contact Info   ********************************/
+.EditContactInfo .modal-lg {
+  max-width: 600px;
+  margin-inline: auto;
+}
+.EditContactInfo .modal-lg .modal-header {
+  border: none;
+}
+.EditContactInfo .modal-lg .modal-header .modal-title {
+  font-size: 18px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000000;
+}
+.EditContactInfo .form {
+}
+.EditContactInfo .form .main-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+.EditContactInfo .form .input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  margin-bottom: 16px;
+  flex: 1;
+}
+.EditContactInfo .form .input-wrap label {
+  font-size: 16px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000000;
+  font-weight: 500;
+}
+.EditContactInfo .form .input-wrap input {
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #bfbfbf;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  transition: border 0.2s ease-in-out;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  color: #000000;
+}
+.EditContactInfo .form .input-wrap.last {
+  /* width: 50%; */
+  width: calc(100% - 293px);
+}
+.EditContactInfo .form .btn-wrapper {
+  text-align: center;
+}
+
+/********************************** Update Email Info   ********************************/
+.updateEmail .modal-lg {
+  max-width: 430px;
+  margin-inline: auto;
+}
+.updateEmail .modal-lg .modal-header {
+  border: none;
+  padding-bottom: 0px;
+}
+.updateEmail .modal-lg .modal-header .modal-title {
+  font-size: 18px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000000;
+}
+.updateEmail .modal-lg .modal-header .modal-body {
+}
+.updateEmail .modal-body p {
+  font-size: 18px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000000;
+  line-height: 24px;
+  margin-bottom: 16px;
+}
+.updateEmail .modal-body .btn-wrapper {
+  text-align: center;
+}
+
+/********************************** Reset Pass Info   ********************************/
+.resetPassword .modal-lg {
+  max-width: 430px;
+  margin-inline: auto;
+}
+.resetPassword .modal-lg .modal-header {
+  border: none;
+  padding-bottom: 0px;
+}
+.resetPassword .modal-lg .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.resetPassword .modal-lg .content img {
+}
+.resetPassword .modal-lg .content h3 {
+  font-size: 24px;
+  color: #000000;
+  font-family: "poppins", sans-serif;
+  font-weight: 700;
+  text-align: center;
+}
+.resetPassword .modal-lg .content p {
+  font-size: 24px;
+  color: #000000;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 500;
+  text-align: center;
+  line-height: 28px;
+}
+
+/********************************** changePassword    ********************************/
+.changePassword .modal-lg {
+  max-width: 430px;
+  margin-inline: auto;
+}
+.changePassword .modal-lg .modal-header {
+  border: none;
+  padding-bottom: 0px;
+}
+.changePassword .modal-lg .modal-header .modal-title {
+  font-size: 18px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000000;
+}
+.changePassword .form .input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  margin-bottom: 16px;
+  flex: 1;
+}
+.changePassword .form .input-wrap label {
+  font-size: 16px;
+  font-family: "Nunito Sans", sans-serif;
+  color: #000000;
+  font-weight: 500;
+}
+.changePassword .form .input-wrap .wrap {
+  position: relative;
+}
+.changePassword .form .input-wrap input {
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #bfbfbf;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  transition: border 0.2s ease-in-out;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  color: #000000;
+  position: relative;
+}
+.changePassword .form .input-wrap .wrap svg {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  right: 0;
+  cursor: pointer;
+}
+.changePassword .form .btn-wrapper {
+  text-align: center;
+}

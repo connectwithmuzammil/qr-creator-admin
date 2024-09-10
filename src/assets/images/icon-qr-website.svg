@@ -1,0 +1,18 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" fillRule="evenodd">
+        <g transform="translate(0 2)">
+            <rect stroke="#595959" fill="#FFF" x=".5" y=".5" width="31" height="27" rx="2"/>
+            <path d="M30 .5c.414 0 .79.168 1.06.44.272.27.44.646.44 1.06v4.5H.5V2c0-.414.168-.79.44-1.06C1.21.667 1.585.5 2 .5z" stroke="#595959" fill="#F2F2F2"/>
+            <rect fill="#595959" x="2" y="3" width="2" height="1" rx=".5"/>
+            <rect fill="#595959" x="5" y="3" width="2" height="1" rx=".5"/>
+            <rect fill="#595959" x="8" y="3" width="2" height="1" rx=".5"/>
+            <rect fill="#595959" x="18" y="12" width="10" height="1" rx=".5"/>
+            <rect fill="#595959" x="18" y="14" width="10" height="1" rx=".5"/>
+            <rect fill="#595959" x="18" y="16" width="10" height="1" rx=".5"/>
+            <rect x="21" y="19" width="5" height="1" rx=".5"/>
+            <circle stroke="#595959" cx="9" cy="17" r="4.5"/>
+            <path stroke="#595959" fill="#F2F2F2" d="m12.5 10 3.5 7H9z"/>
+        </g>
+        <rect fill="#595959" x="21" y="21" width="5" height="1" rx=".5"/>
+    </g>
+</svg>

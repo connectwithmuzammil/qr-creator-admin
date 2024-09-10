@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(5 3)" fill="none" fillRule="evenodd">
+        <rect stroke="#595959" fill="#F2F2F2" x="2.5" y=".5" width="19" height="24" rx="2"/>
+        <rect stroke="#595959" fill="#FFF" x=".5" y="2.5" width="19" height="24" rx="2"/>
+        <rect fill="#595959" x="5.119" y="12" width="9.817" height="1" rx=".5"/>
+        <rect fill="#595959" x="5.119" y="15" width="9.817" height="1" rx=".5"/>
+        <rect fill="#595959" x="5.119" y="18" width="9.817" height="1" rx=".5"/>
+        <rect fill="#595959" x="8.119" y="21" width="4" height="1" rx=".5"/>
+        <ellipse stroke="#595959" fill="#F2F2F2" cx="10.027" cy="7.5" rx="1.954" ry="2"/>
+    </g>
+</svg>
