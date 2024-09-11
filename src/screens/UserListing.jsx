@@ -6,12 +6,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 const UserListing = () => {
-  const handleActionClick = (user_id, status) => {
-    console.log(`User ID: ${user_id} | status: ${status}`);
-    mutateChangeUserStatus({ user_id, status });
-    refetch();
-  };
-
   const {
     isLoading,
     error,
@@ -39,6 +33,22 @@ const UserListing = () => {
         toast.success(changeUserStatus?.message);
       },
     });
+
+  const handleActionClick = (user_id, status) => {
+    console.log(`User ID: ${user_id} | status: ${status}`);
+    // mutateChangeUserStatus({ user_id, status });
+    // refetch();
+    mutateChangeUserStatus(
+      { user_id, status },
+      {
+        onSuccess: () => {
+          // Refetch the user list after successfully changing the user status
+          refetch();
+        },
+      }
+    );
+  };
+
   if (isLoading) {
     return (
       <div className="loader-wrapper">
