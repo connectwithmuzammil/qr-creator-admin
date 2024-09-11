@@ -39,65 +39,13 @@ const createBackendServer = (baseURL) => {
     "Content-Type": "multipart/form-data",
   };
 
-  /*==========    GET REQUESTS    ==========*/
-
-  const getProfile = async (id) => await api.get(`/api/user/${id}`);
-
-  /*==========    POST REQUESTS JTC   ==========*/
-  const authLogin = async (body) => api.post("ecomuser/login", body);
-
-  const authLogout = async (body) => api.post("logout", body);
-
-  const authVerify = async (body) => api.post("ecomuser/otp-verify", body);
-  const authResend = (body) => api.post("ecomuser/resend-otp", body);
-  const authForget = async (body) =>
-    api.post("ecomuser/sendPasswordResetLinkEmailEcom", body);
-  const authResetPassword = async (body) =>
-    api.post("ecomuser/resetPasswordEcom", body);
-  const authChangePassword = async (body) =>
-    api.post("ecomuser/change-password", body);
-
-
-  const removeProductFromCart = async (body) =>
-    api.post("ecomuser/remove-cart", body);
-
-  // const updateProfile = async (body) =>
-  //   api.post("ecommerceProfile/updateProfileEcom", body);
-
-
-
-  const authResendForgot = async (body) =>
-    api.post("ecomuser/resend-otp-not-valid", body);
 
 
 
 
   /*==========    GET REQUESTS  JTC ==========*/
 
-  const getAllProductWithCategory = async (id) =>
-    await api.get(`getProductCategory?userId=${id}`);
-  const getProductDetails = async (id, userId) =>
-    await api.get(`product/product/${id}?user_id=${userId}`);
 
-
-  const authRegisterReferral = ({ body, code }) =>
-    api.post(`auth/register?referralCode=${code}`, body);
-  const updateUser = ({ id, body }) => api.put(`user/update/${id}`, body);
-
-
-  const getStoreDetails = async (id) => api.get(`store/slug/${id}?type=store`);
-
-
-  const getStoreSlot = ({ id, duration, staff_Id }) =>
-    api.get(`store/slots/${id}?duration=${duration}&staff_Id=${staff_Id}`);
-
-  const getStoreSlotwithoutStaff = ({ id, duration }) =>
-    api.get(`store/slots/${id}?duration=${duration}
-    `);
-  const addFavorite = (body) => api.post(`user/favourite-add`, body);
-
-
-  const getOrderDetails = (id) => api.get(`/getSalesApp/${id}`);
 
 
   // ---------------------------------------------------------------------------------------
@@ -107,28 +55,23 @@ const createBackendServer = (baseURL) => {
   const login = (body) => api.post("login", body);
   const logout = (body) => api.post("logout", body);
 
-  const generateQrCode = (body) => api.post("generate", body)
-  const validateQrCode = (type) => api.get(`validations/${type}`)
-  const updateProfile = (body) => api.post(`update-name`, body);
-  const updateEmail = (body) => api.post(`update-email`, body);
-  const sendPasswordResetEmail = (body) => api.post(`restpassword`, body);
-  const scanQrCode = (body) => api.post(`qr_scan`, body);
-  const QRCount = () => api.get(`qr_count`);
-  const GETAllQrCode = () => api.get(`user_qr`);
+
+  // ADMIN API 
+  const getUserBilling = () => api.get(`admin/connectedusers`);
+  const allUserCount = () => api.get(`admin/activeusers`);
+  const getAllUserList = () => api.get(`admin/getalluserlist`);
+  const changeUserStatus = (body) => api.post(`admin/updatestatus`, body);
+
 
   //Returning all the API
   return {
     signup,
     login,
     logout,
-    generateQrCode,
-    validateQrCode,
-    updateProfile,
-    updateEmail,
-    sendPasswordResetEmail,
-    QRCount,
-    GETAllQrCode,
-    scanQrCode
+    getUserBilling,
+    allUserCount,
+    getAllUserList,
+    changeUserStatus
   };
 };
 

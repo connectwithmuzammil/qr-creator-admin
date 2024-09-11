@@ -2,28 +2,22 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useMediaQuery } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-
+import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
+import { useMediaQuery, IconButton } from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PeopleIcon from "@mui/icons-material/People";
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import {
   Logo,
   SidebarAccount,
-  SidebarAnalytics,
   SidebarBilling,
-  SidebarCompany,
-  SidebarHelp,
-  SidebarLogout,
-  SideBarQrCodeSVG,
+  SidebarLogout
 } from "./SVGIcon";
 import apis from "../services";
 import { logout } from "../redux/slice/userSlice";
@@ -34,20 +28,18 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((store) => store.user);
-  console.log("user", user?.user);
+
   const [state, setState] = React.useState({
     left: false,
   });
   const [openCompany, setOpenCompany] = React.useState(false);
   const [openHelp, setOpenHelp] = React.useState(false);
-  const handleCompanyClick = () => {
-    setOpenCompany(!openCompany);
-  };
-  const handleHelpClick = () => {
-    setOpenHelp(!openHelp);
-  };
+  
+  const isMobile = useMediaQuery("(max-width:768px)");
 
-  const isMobile = useMediaQuery("(max-width:600px)");
+  // State to control the sidebar and toggle between MenuIcon and CloseIcon
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -56,6 +48,7 @@ const Sidebar = () => {
       return;
     }
     setState({ ...state, [anchor]: open });
+    setIsDrawerOpen(open);  // Toggle the drawer open/close state
   };
 
   //LOGOUT API
@@ -77,7 +70,7 @@ const Sidebar = () => {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <Box sx={{}} className="logo" onClick={()=>navigate("/")}>
+      <Box className="logo" onClick={() => navigate("/")}>
         <Logo color={"#fcfcfc"} />
       </Box>
       <List>
@@ -94,25 +87,39 @@ const Sidebar = () => {
               margin: "0px 30px 0px 30px",
             }}
             component={Link}
-            to="/my-qr-codes"
+            to="/dashboard"
           >
             <ListItemIcon sx={{ minWidth: "40px" }}>
-              {/* <HomeIcon /> */}
-              <SideBarQrCodeSVG />
+              <DashboardIcon sx={{ color: "#fff" }} />
             </ListItemIcon>
-            <ListItemText
-              sx={{
-                color: "#fcfcfc",
-              }}
-              primary={"user listing"}
-              className=""
-            />
+            <ListItemText sx={{ color: "#fcfcfc" }} primary={"Dashboard"} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            sx={{
+              "&:hover": {
+                opacity: 0.8,
+                borderLeft: "4px solid #307fe2",
+                backgroundColor: "#0a335c !important",
+              },
+              borderLeft: "4px solid transparent",
+              transition: "all 0.3s ease",
+              margin: "0px 30px 0px 30px",
+            }}
+            component={Link}
+            to="/user-listing"
+          >
+            <ListItemIcon sx={{ minWidth: "40px" }}>
+              <PeopleIcon sx={{ color: "#fff" }} />
+            </ListItemIcon>
+            <ListItemText sx={{ color: "#fcfcfc" }} primary={"User Listing"} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton
             component={Link}
-            to="/my-qr-analytics"
+            to="/user-billing"
             sx={{
               "&:hover": {
                 opacity: 0.8,
@@ -125,14 +132,9 @@ const Sidebar = () => {
             }}
           >
             <ListItemIcon sx={{ minWidth: "40px" }}>
-              <SidebarAnalytics />
+              <AccountBalanceWalletIcon sx={{ color: "#fff" }} />
             </ListItemIcon>
-            <ListItemText
-              primary={"user billing"}
-              sx={{
-                color: "#fcfcfc",
-              }}
-            />
+            <ListItemText sx={{ color: "#fcfcfc" }} primary={"User Billing"} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -153,15 +155,7 @@ const Sidebar = () => {
             <ListItemIcon sx={{ minWidth: "40px" }}>
               <SidebarAccount />
             </ListItemIcon>
-            <ListItemText
-              primary={"user account"}
-              sx={{
-                color: "#fcfcfc",
-                fontFamily: '"Nunito Sans", sans-serif',
-                fontSize: "16px",
-                font: "inherit",
-              }}
-            />
+            <ListItemText sx={{ color: "#fcfcfc" }} primary={"User Account"} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding sx={{ marginBottom: "20px" }}>
@@ -186,7 +180,6 @@ const Sidebar = () => {
           </ListItemButton>
         </ListItem>
       </List>
-
       <List>
         <ListItem disablePadding>
           <ListItemButton
@@ -202,15 +195,11 @@ const Sidebar = () => {
             }}
           >
             <ListItemIcon sx={{ minWidth: "40px" }}>
-              {/* <HomeIcon /> */}
               <SidebarLogout />
             </ListItemIcon>
             <ListItemText
-              sx={{
-                color: "#6f7b87",
-              }}
+              sx={{ color: "#6f7b87" }}
               primary={"Log Out"}
-              className=""
               onClick={logoutHandler}
             />
           </ListItemButton>
@@ -232,10 +221,16 @@ const Sidebar = () => {
       )}
       {isMobile && (
         <>
-          <MenuIcon
-            onClick={toggleDrawer("left", true)}
-            style={{ position: "fixed", top: 0, left: 0, zIndex: 1300 }}
-          />
+          <IconButton
+            onClick={toggleDrawer("left", !isDrawerOpen)}
+            style={{ position: "fixed", top: 10, left: 10, zIndex: 1300 }}
+          >
+            {isDrawerOpen ? (
+              <CloseIcon sx={{ color: "#fff" }} />
+            ) : (
+              <MenuIcon sx={{ color: "#000" }} />
+            )}
+          </IconButton>
           <Drawer
             anchor={"left"}
             open={state["left"]}

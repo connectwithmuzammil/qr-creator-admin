@@ -83,3 +83,24 @@
   font-size: 12px;
   margin-top: 4px;
 }
+
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.loader-wrapper .loaderr {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 8px solid #ecbfbe;
+  border-right-color: #e0201c;
+  animation: l2 1s infinite linear;
+}
+@keyframes l2 {
+  to {
+    transform: rotate(1turn);
+  }
+}

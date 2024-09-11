@@ -333,3 +333,13 @@
 .changePassword .form .btn-wrapper {
   text-align: center;
 }
+
+@media screen and (max-width: 768px) {
+  .loginModal .modal-lg{
+    max-width: 320px;
+  }
+  .loginModal .modal-body{
+    padding-top: 0px;
+    padding-bottom: 20px;
+  }
+}
