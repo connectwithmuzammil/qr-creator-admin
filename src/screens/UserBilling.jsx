@@ -72,7 +72,11 @@ const UserBilling = () => {
                         </button>
                       )}
                     </td>
-                    <td>{billing?.active_status}</td>
+                    <td
+                      className={billing?.active_status == 1 ? "active" : "expired"}
+                    >
+                      {billing?.active_status == 1 ? "Active" : "Inactive"}{" "}
+                    </td>
                   </tr>
                 ))
               ) : (
