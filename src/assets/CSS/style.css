@@ -3594,6 +3594,9 @@ p.social-con-content {
 
 .user-billing-page .billing-table th {
   background-color: #f4f4f4;
+  text-transform: uppercase;
+  font-family: poppins, sans-serif;
+  color: #000;
 }
 
 .user-billing-page .billing-table tr:nth-child(even) {

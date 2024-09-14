@@ -12,13 +12,8 @@ import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
 import { useMediaQuery, IconButton } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import {
-  Logo,
-  SidebarAccount,
-  SidebarBilling,
-  SidebarLogout
-} from "./SVGIcon";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import { Logo, SidebarAccount, SidebarBilling, SidebarLogout } from "./SVGIcon";
 import apis from "../services";
 import { logout } from "../redux/slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +29,7 @@ const Sidebar = () => {
   });
   const [openCompany, setOpenCompany] = React.useState(false);
   const [openHelp, setOpenHelp] = React.useState(false);
-  
+
   const isMobile = useMediaQuery("(max-width:768px)");
 
   // State to control the sidebar and toggle between MenuIcon and CloseIcon
@@ -48,7 +43,7 @@ const Sidebar = () => {
       return;
     }
     setState({ ...state, [anchor]: open });
-    setIsDrawerOpen(open);  // Toggle the drawer open/close state
+    setIsDrawerOpen(open); // Toggle the drawer open/close state
   };
 
   //LOGOUT API
@@ -137,7 +132,7 @@ const Sidebar = () => {
             <ListItemText sx={{ color: "#fcfcfc" }} primary={"User Billing"} />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        {/* <ListItem disablePadding>
           <ListItemButton
             sx={{
               "&:hover": {
@@ -157,7 +152,7 @@ const Sidebar = () => {
             </ListItemIcon>
             <ListItemText sx={{ color: "#fcfcfc" }} primary={"User Account"} />
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
         <ListItem disablePadding sx={{ marginBottom: "20px" }}>
           <ListItemButton
             sx={{
@@ -171,12 +166,12 @@ const Sidebar = () => {
               margin: "0px 30px 0px 30px",
             }}
             component={Link}
-            to="/my-billing"
+            to="/user-finance"
           >
             <ListItemIcon sx={{ minWidth: "40px" }}>
               <SidebarBilling />
             </ListItemIcon>
-            <ListItemText primary={"Billing"} sx={{ color: "#fff" }} />
+            <ListItemText primary={"Finance"} sx={{ color: "#fff" }} />
           </ListItemButton>
         </ListItem>
       </List>

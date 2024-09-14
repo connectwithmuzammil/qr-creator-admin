@@ -60,6 +60,7 @@ const createBackendServer = (baseURL) => {
   const getUserBilling = () => api.get(`admin/connectedusers`);
   const allUserCount = () => api.get(`admin/activeusers`);
   const getAllUserList = () => api.get(`admin/getalluserlist`);
+  const getUserSubscription = () => api.get(`admin/getallsubdetails`);
   const changeUserStatus = (body) => api.post(`admin/updatestatus`, body);
 
 
@@ -71,7 +72,8 @@ const createBackendServer = (baseURL) => {
     getUserBilling,
     allUserCount,
     getAllUserList,
-    changeUserStatus
+    changeUserStatus,
+    getUserSubscription
   };
 };
 
