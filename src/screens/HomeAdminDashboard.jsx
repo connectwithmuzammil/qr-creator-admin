@@ -1,6 +1,6 @@
 import React from "react";
 import { Sidebar } from "../components";
-import { FaUser, FaEnvelope, FaBell } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaBell, FaRegCreditCard, FaQrcode, FaUserCheck, FaUserTimes } from "react-icons/fa";
 import apis from "../services";
 import { useQuery } from "@tanstack/react-query";
 
@@ -38,14 +38,34 @@ const HomeAdminDashboard = () => {
               <p>{getAllUserCount?.total_users}</p>
             </div>
             <div className="cardd">
+              <FaUserCheck  className="card-icon" />
+              <h3>Subscribe Users</h3>
+              <p>{getAllUserCount?.sub_users}</p>
+            </div>
+            <div className="cardd">
+              <FaUserTimes  className="card-icon" />
+              <h3>UnSubscribe Users</h3>
+              <p>{getAllUserCount?.unsub_users}</p>
+            </div>
+            {/* <div className="cardd">
               <FaEnvelope className="card-icon" />
               <h3>Subscribed Users</h3>
               <p>{getAllUserCount?.active_users}</p>
-            </div>
-            <div className="cardd full-width">
+            </div> */}
+            {/* <div className="cardd ">
               <FaBell className="card-icon" />
               <h3>Unsubscribed Users</h3>
               <p>{getAllUserCount?.inactive_users}</p>
+            </div> */}
+            <div className="cardd ">
+              <FaRegCreditCard  className="card-icon" />
+              <h3>Total Subscription</h3>
+              <p>{getAllUserCount?.total_subscription}</p>
+            </div>
+            <div className="cardd full-width">
+              <FaQrcode  className="card-icon" />
+              <h3>Total QR-Scan</h3>
+              <p>{getAllUserCount?.total_qr_scan}</p>
             </div>
           </div>
         </div>
