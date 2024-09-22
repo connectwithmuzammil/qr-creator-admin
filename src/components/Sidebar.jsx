@@ -189,7 +189,7 @@ const Sidebar = () => {
               margin: "0px 30px 0px 30px",
             }}
             component={Link}
-            to="/analytics"
+            to="/user-analytics"
           >
             <ListItemIcon sx={{ minWidth: "40px" }}>
               <InsightsIcon sx={{ color: "#fff" }} />

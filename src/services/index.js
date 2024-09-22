@@ -39,14 +39,7 @@ const createBackendServer = (baseURL) => {
     "Content-Type": "multipart/form-data",
   };
 
-
-
-
-
   /*==========    GET REQUESTS  JTC ==========*/
-
-
-
 
   // ---------------------------------------------------------------------------------------
 
@@ -55,14 +48,15 @@ const createBackendServer = (baseURL) => {
   const login = (body) => api.post("login", body);
   const logout = (body) => api.post("logout", body);
 
-
-  // ADMIN API 
+  // ADMIN API
   const getUserBilling = () => api.get(`admin/connectedusers`);
   const allUserCount = () => api.get(`admin/activeusers`);
   const getAllUserList = () => api.get(`admin/getalluserlist`);
   const getUserSubscription = () => api.get(`admin/getallsubdetails`);
   const changeUserStatus = (body) => api.post(`admin/updatestatus`, body);
-
+  const getSingleUser = (id) => api.get(`admin/getuser/${id}`);
+  const updateSingleUser = (body) => api.post(`admin/updateuser`, body);
+  const deleteSingleUser = (id) => api.delete(`admin/canceluser/${id}`);
 
   //Returning all the API
   return {
@@ -73,7 +67,10 @@ const createBackendServer = (baseURL) => {
     allUserCount,
     getAllUserList,
     changeUserStatus,
-    getUserSubscription
+    getUserSubscription,
+    getSingleUser,
+    updateSingleUser,
+    deleteSingleUser
   };
 };
 

@@ -1,6 +1,14 @@
 import React from "react";
 import { Sidebar } from "../components";
-import { FaUser, FaEnvelope, FaBell, FaRegCreditCard, FaQrcode, FaUserCheck, FaUserTimes } from "react-icons/fa";
+import {
+  FaUser,
+  FaEnvelope,
+  FaBell,
+  FaRegCreditCard,
+  FaQrcode,
+  FaUserCheck,
+  FaUserTimes,
+} from "react-icons/fa";
 import apis from "../services";
 import { useQuery } from "@tanstack/react-query";
 
@@ -35,17 +43,27 @@ const HomeAdminDashboard = () => {
             <div className="cardd">
               <FaUser className="card-icon" />
               <h3>Total Users</h3>
-              <p>{getAllUserCount?.total_users}</p>
+              <p>
+                {getAllUserCount?.total_users
+                  ? getAllUserCount?.total_users
+                  : "0"}
+              </p>
             </div>
             <div className="cardd">
-              <FaUserCheck  className="card-icon" />
+              <FaUserCheck className="card-icon" />
               <h3>Subscribe Users</h3>
-              <p>{getAllUserCount?.sub_users}</p>
+              <p>
+                {getAllUserCount?.sub_users ? getAllUserCount?.sub_users : "0"}
+              </p>
             </div>
             <div className="cardd">
-              <FaUserTimes  className="card-icon" />
+              <FaUserTimes className="card-icon" />
               <h3>UnSubscribe Users</h3>
-              <p>{getAllUserCount?.unsub_users}</p>
+              <p>
+                {getAllUserCount?.unsub_users
+                  ? getAllUserCount?.unsub_users
+                  : "0"}
+              </p>
             </div>
             {/* <div className="cardd">
               <FaEnvelope className="card-icon" />
@@ -58,14 +76,22 @@ const HomeAdminDashboard = () => {
               <p>{getAllUserCount?.inactive_users}</p>
             </div> */}
             <div className="cardd ">
-              <FaRegCreditCard  className="card-icon" />
+              <FaRegCreditCard className="card-icon" />
               <h3>Total Subscription</h3>
-              <p>{getAllUserCount?.total_subscription}</p>
+              <p>
+                {getAllUserCount?.total_subscription
+                  ? getAllUserCount?.total_subscription
+                  : "0"}
+              </p>
             </div>
             <div className="cardd full-width">
-              <FaQrcode  className="card-icon" />
+              <FaQrcode className="card-icon" />
               <h3>Total QR-Scan</h3>
-              <p>{getAllUserCount?.total_qr_scan}</p>
+              <p>
+                {getAllUserCount?.total_qr_scan
+                  ? getAllUserCount?.total_qr_scan
+                  : "0"}
+              </p>
             </div>
           </div>
         </div>

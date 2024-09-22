@@ -8,6 +8,8 @@ import { FaEye } from "react-icons/fa";
 
 const UserListing = () => {
   const [showUserModal, setShowUserModal] = useState(false);
+  const [selectedSingleUser, setSelectedSingleUser] = useState(null);
+
   const {
     isLoading,
     error,
@@ -49,6 +51,55 @@ const UserListing = () => {
         },
       }
     );
+  };
+
+  //GET SINGLE USER
+  const handleShowUserModal = (userId) => {
+    console.log("USERIDD", userId);
+    apis
+      .getSingleUser(userId)
+      .then((response) => {
+        setSelectedSingleUser(response?.data?.data);
+        setShowUserModal(true);
+      })
+      .catch((error) => {
+        console.error("Error fetching single user:", error);
+      });
+  };
+
+  //UPDATE SINGLE USER
+  const handleUpdateUser = (updatedUser) => {
+    // Call the updateSingleUser API
+    apis
+      .updateSingleUser(updatedUser)
+      .then((response) => {
+        console.log("User updated successfully:", response);
+        if (response?.data?.success) toast.success(response?.data?.message);
+        // Optionally close the modal and refresh the user list
+        setShowUserModal(false);
+        // You can refresh the user list here or update the UI accordingly
+        refetch();
+      })
+      .catch((error) => {
+        console.error("Error updating user:", error);
+        toast.error(error?.message);
+      });
+  };
+
+  // DELETE SINGLE USER
+  const handleDeleteUser = async (userId) => {
+    try {
+      if (window.confirm("Are you sure you want to delete this user?")) {
+        const response = await apis.deleteSingleUser(userId);
+        console.log("responseDeleteUser", response);
+        if (response?.data?.success) toast.success(response?.data?.message);
+        refetch();
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      // Optionally, show an error message
+      // toast.error("Failed to delete user.");
+    }
   };
 
   if (isLoading) {
@@ -95,7 +146,7 @@ const UserListing = () => {
                       <td>
                         <FaEye
                           style={{ marginRight: "40px", cursor: "pointer" }}
-                          onClick={()=>setShowUserModal(true)}
+                          onClick={() => handleShowUserModal(user?.id)}
                         />
 
                         <div className="action-dropdown">
@@ -112,6 +163,9 @@ const UserListing = () => {
                               onClick={() => handleActionClick(user.id, 0)}
                             >
                               Deactivate
+                            </button>
+                            <button onClick={() => handleDeleteUser(user?.id)}>
+                              Delete
                             </button>
                           </div>
                         </div>
@@ -133,6 +187,8 @@ const UserListing = () => {
       <UserModal
         setShowUserModal={setShowUserModal}
         showUserModal={showUserModal}
+        singleUser={selectedSingleUser}
+        handleUpdateUser={handleUpdateUser}
       />
     </>
   );
