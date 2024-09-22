@@ -1,11 +1,13 @@
-import React from "react";
-import { Sidebar } from "../components";
+import React, { useState } from "react";
+import { Sidebar, UserModal } from "../components";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import apis from "../services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { FaEye } from "react-icons/fa";
 
 const UserListing = () => {
+  const [showUserModal, setShowUserModal] = useState(false);
   const {
     isLoading,
     error,
@@ -58,70 +60,81 @@ const UserListing = () => {
   }
 
   return (
-    <div className="qr-main-page user-listing-page">
-      <div className="userDashboard">
-        <Sidebar />
-        <div className="content-page">
-          <h1>User Listing</h1>
-          <table className="user-table-listing">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {getAllUserList?.data?.length > 0 ? (
-                getAllUserList.data.map((user) => (
-                  <tr key={user.id}>
-                    <td>
-                      {user?.first_name && user?.last_name
-                        ? `${user.first_name} ${user.last_name}`
-                        : "-"}
-                    </td>
-                    <td>{user?.email ? user?.email : "-"}</td>
-                    <td
-                      className={
-                        user.active_status == 1 ? "active" : "inactive"
-                      }
-                    >
-                      {user?.active_status == 1 ? "Active" : "Inactive"}
-                    </td>
-                    <td>
-                      <div className="action-dropdown">
-                        <BsThreeDotsVertical className="action-icon" />
-                        <div className="dropdown-content">
-                          <button
-                            disabled={isLoadingUserStatus}
-                            onClick={() => handleActionClick(user?.id, 1)}
-                          >
-                            Activate
-                          </button>
-                          <button
-                            disabled={isLoadingUserStatus}
-                            onClick={() => handleActionClick(user.id, 0)}
-                          >
-                            Deactivate
-                          </button>
+    <>
+      <div className="qr-main-page user-listing-page">
+        <div className="userDashboard">
+          <Sidebar />
+          <div className="content-page">
+            <h1>User Listing</h1>
+            <table className="user-table-listing">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getAllUserList?.data?.length > 0 ? (
+                  getAllUserList.data.map((user) => (
+                    <tr key={user.id}>
+                      <td>
+                        {user?.first_name && user?.last_name
+                          ? `${user.first_name} ${user.last_name}`
+                          : "-"}
+                      </td>
+                      <td>{user?.email ? user?.email : "-"}</td>
+                      <td
+                        className={
+                          user.active_status == 1 ? "active" : "inactive"
+                        }
+                      >
+                        {user?.active_status == 1 ? "Active" : "Inactive"}
+                      </td>
+                      <td>
+                        <FaEye
+                          style={{ marginRight: "40px", cursor: "pointer" }}
+                          onClick={()=>setShowUserModal(true)}
+                        />
+
+                        <div className="action-dropdown">
+                          <BsThreeDotsVertical className="action-icon" />
+                          <div className="dropdown-content">
+                            <button
+                              disabled={isLoadingUserStatus}
+                              onClick={() => handleActionClick(user?.id, 1)}
+                            >
+                              Activate
+                            </button>
+                            <button
+                              disabled={isLoadingUserStatus}
+                              onClick={() => handleActionClick(user.id, 0)}
+                            >
+                              Deactivate
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <>
-                  <tr>
-                    <td colSpan="5">No Data Found</td>
-                  </tr>
-                </>
-              )}
-            </tbody>
-          </table>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <>
+                    <tr>
+                      <td colSpan="5">No Data Found</td>
+                    </tr>
+                  </>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
+      <UserModal
+        setShowUserModal={setShowUserModal}
+        showUserModal={showUserModal}
+      />
+    </>
   );
 };
 
