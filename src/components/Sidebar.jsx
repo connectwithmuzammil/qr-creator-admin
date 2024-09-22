@@ -18,6 +18,7 @@ import apis from "../services";
 import { logout } from "../redux/slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import InsightsIcon from "@mui/icons-material/Insights";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -153,7 +154,7 @@ const Sidebar = () => {
             <ListItemText sx={{ color: "#fcfcfc" }} primary={"User Account"} />
           </ListItemButton>
         </ListItem> */}
-        <ListItem disablePadding sx={{ marginBottom: "20px" }}>
+        <ListItem disablePadding sx={{ marginBottom: "" }}>
           <ListItemButton
             sx={{
               "&:hover": {
@@ -172,6 +173,28 @@ const Sidebar = () => {
               <SidebarBilling />
             </ListItemIcon>
             <ListItemText primary={"Finance"} sx={{ color: "#fff" }} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding sx={{ marginBottom: "20px" }}>
+          <ListItemButton
+            sx={{
+              "&:hover": {
+                opacity: 0.8,
+                borderLeft: "4px solid #307fe2",
+                backgroundColor: "#0a335c !important",
+              },
+              borderLeft: "4px solid transparent",
+              transition: "all 0.3s ease",
+              margin: "0px 30px 0px 30px",
+            }}
+            component={Link}
+            to="/analytics"
+          >
+            <ListItemIcon sx={{ minWidth: "40px" }}>
+              <InsightsIcon sx={{ color: "#fff" }} />
+            </ListItemIcon>
+            <ListItemText primary={"Analytics"} sx={{ color: "#fff" }} />
           </ListItemButton>
         </ListItem>
       </List>
