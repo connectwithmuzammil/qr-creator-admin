@@ -57,7 +57,13 @@ const createBackendServer = (baseURL) => {
   const getSingleUser = (id) => api.get(`admin/getuser/${id}`);
   const updateSingleUser = (body) => api.post(`admin/updateuser`, body);
   const deleteSingleUser = (id) => api.delete(`admin/canceluser/${id}`);
+  const getQrList = () => api.get(`admin/qrlist`);
 
+  // ANALYTICS
+  const getQrStats = () => api.get(`admin/qr_stats_system`);
+  const getQrScanActivity = (filter) => api.get(`admin/qr_stats?filter=${filter}`);
+  const getQrCount = () => api.get(`admin/analytics`);
+  
   //Returning all the API
   return {
     signup,
@@ -70,7 +76,11 @@ const createBackendServer = (baseURL) => {
     getUserSubscription,
     getSingleUser,
     updateSingleUser,
-    deleteSingleUser
+    deleteSingleUser,
+    getQrStats,
+    getQrList,
+    getQrScanActivity,
+    getQrCount
   };
 };
 

@@ -4,6 +4,7 @@ import "./assets/CSS/responsive.css";
 import "react-toastify/dist/ReactToastify.css";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import {
+  AllQrList,
   HomeAdminDashboard,
   Login,
   UserAnalytics,
@@ -45,6 +46,10 @@ const App = () => {
         <Route
           path="/user-analytics"
           element={<PrivateRoute element={UserAnalytics} />}
+        />
+        <Route
+          path="/qr-list"
+          element={<PrivateRoute element={AllQrList} />}
         />
       </Routes>
     </>

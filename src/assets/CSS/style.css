@@ -3643,3 +3643,227 @@ p.social-con-content {
 .user-billing-page .unsubscribe-btn:hover {
   background-color: #c82333;
 }
+
+/* ANALYTICS CSS */
+.user-analytics-page .analytics-con {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+.user-analytics-page .analytics-con .cardd {
+  background-color: #fcfcfc;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 8px 0 #5959592e;
+  flex: 1 1;
+  padding: 1.5rem;
+}
+.user-analytics-page .analytics-con .cardd .wrap {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.user-analytics-page .analytics-con .cardd .wrap p {
+  color: #8c8c8c;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 16px;
+  margin: 0;
+}
+.user-analytics-page .analytics-con .cardd h3 {
+  color: #212529;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 0 40px;
+}
+.user-analytics-page .graph-con {
+  background-color: #fcfcfc;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 8px 0 #5959592e;
+  margin-bottom: 32px;
+  padding: 1.5rem;
+  position: relative;
+}
+.user-analytics-page .graph-con p {
+  color: #000;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+.user-analytics-page .all-card-con {
+  grid-gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.user-analytics-page .all-card-con .cardd {
+  background-color: #fcfcfc;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 8px 0 #5959592e;
+  height: 350px;
+  padding: 1.5rem;
+}
+.user-analytics-page .all-card-con .cardd p {
+  color: #000;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+.user-analytics-page .graph-con .stats-txt {
+  color: #403f3f;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 16px;
+  left: 50%;
+  position: relative;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+.user-analytics-page .all-card-con .cardd h4.stats-txt {
+  color: #403f3f;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 16px;
+  left: 50%;
+  position: relative;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.user-analytics-page .graph-con .main-filter-con {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-buttons button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filter-buttons button:hover {
+  background-color: #0056b3;
+}
+
+.filter-buttons button:active {
+  background-color: #004494;
+}
+
+.filter-buttons button.selected {
+  background-color: #28a745;
+}
+
+/* ALL QR LIST */
+.all-qrList {
+}
+.all-qrList .result-cardd {
+  /* background-color: #fcfcfc; */
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 5px 8px 0 rgba(89, 89, 89, 0.18);
+  border: 1px solid #e0201c;
+  border-radius: 4px;
+}
+.all-qrList .result-cardd .one {
+  align-items: center;
+  display: flex;
+  flex: 1 1;
+  gap: 8px;
+}
+.all-qrList .result-cardd .two .modifiedDate-con .wrap {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.all-qrList .result-cardd .two .modifiedDate-con .wrap h6 {
+  color: #8c8c8c;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 12px;
+  margin: 0;
+}
+
+.all-qrList .result-cardd .one {
+  align-items: center;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  gap: 2px;
+}
+.all-qrList .result-cardd .three {
+  align-items: center;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  gap: 2px;
+}
+.all-qrList .result-cardd .three p {
+  color: #8c8c8c;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 14px;
+  margin: 0;
+}
+.all-qrList .result-cardd .three h1 {
+  color: #000;
+  font-family: poppins, sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+}
+.all-qrList .result-cardd .four {
+  align-items: center;
+  display: flex;
+  flex: 1.5;
+  flex-direction: column;
+  gap: 2px;
+}
+.all-qrList .result-cardd .four p {
+  color: #8c8c8c;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 14px;
+  margin: 0;
+}
+.all-qrList .result-cardd .four h1 {
+  color: #000;
+  font-family: poppins, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  margin: 0;
+}
+.all-qrList .result-cardd .five {
+  align-items: center;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  gap: 2px;
+}
+.all-qrList .result-cardd .five button{
+  border: 1px solid #e0201c;
+  border-radius: 4px;
+  color: #e0201c;
+  cursor: pointer;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  padding: 4px 16px;
+  background-color: transparent;
+}

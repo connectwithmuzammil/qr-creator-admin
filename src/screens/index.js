@@ -1,3 +1,4 @@
+import AllQrList from "./AllQrList";
 import HomeAdminDashboard from "./HomeAdminDashboard";
 import Login from "./Login";
 import UserAnalytics from "./UserAnalytics";
@@ -12,4 +13,5 @@ export {
   UserBilling,
   UserSubscription,
   UserAnalytics,
+  AllQrList
 };
