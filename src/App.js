@@ -7,6 +7,7 @@ import {
   AllQrList,
   HomeAdminDashboard,
   Login,
+  QRIMAGESHOW,
   UserAnalytics,
   UserBilling,
   UserListing,
@@ -51,6 +52,8 @@ const App = () => {
           path="/qr-list"
           element={<PrivateRoute element={AllQrList} />}
         />
+        <Route path="/qr-image" element={<QRIMAGESHOW />} />
+
       </Routes>
     </>
   );

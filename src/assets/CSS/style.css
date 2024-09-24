@@ -3788,6 +3788,39 @@ p.social-con-content {
   flex: 1 1;
   gap: 8px;
 }
+.all-qrList .result-cardd .one .img-con{
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border: 1px solid #e0201c;
+  border-radius: 4px;
+}
+.all-qrList .result-cardd .one .img-con svg{
+  width: 80px;
+    height: 80px;
+    object-fit: contain;
+    padding: 5px;
+}
+.all-qrList .result-cardd .one .img-con svg canvas{
+  width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.all-qrList .result-cardd .one .content-wrap{}
+.all-qrList .result-cardd .one .content-wrap h4{
+  color: #e0201c;
+    font-size: 16px;
+    font-family: "Nunito Sans", sans-serif;
+    margin: 0;
+    font-weight: 600;
+}
+.all-qrList .result-cardd .one .content-wrap h3{
+  color: #404040;
+  font-size: 16px;
+  font-family: "Nunito Sans", sans-serif;
+  margin: 0;
+  font-weight: 700;
+}
 .all-qrList .result-cardd .two .modifiedDate-con .wrap {
   align-items: center;
   display: flex;
@@ -3800,14 +3833,14 @@ p.social-con-content {
   font-size: 12px;
   margin: 0;
 }
-
+/* 
 .all-qrList .result-cardd .one {
   align-items: center;
   display: flex;
   flex: 1 1;
   flex-direction: column;
   gap: 2px;
-}
+} */
 .all-qrList .result-cardd .three {
   align-items: center;
   display: flex;
