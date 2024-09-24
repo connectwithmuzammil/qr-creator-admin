@@ -3769,6 +3769,9 @@ p.social-con-content {
 .all-qrList {
 }
 .all-qrList .result-cardd {
+  
+}
+.all-qrList .result-cardd .result-cardd-wrapper {
   /* background-color: #fcfcfc; */
   padding: 1rem;
   margin-bottom: 1.25rem;
@@ -3899,4 +3902,12 @@ p.social-con-content {
   margin: 0;
   padding: 4px 16px;
   background-color: transparent;
+}
+
+.all-qrList .result-cardd .two{
+  align-items: center;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  gap: 2px;
 }

@@ -24,27 +24,25 @@ const QRIMAGESHOW = () => {
   const qrCode = useRef(null);
 
   const [selectedFrame, setSelectedFrame] = useState(
-    QRres?.singleViewDetail?.[0]?.style?.frameName
+    QRres?.singleViewDetail?.style?.frameName
   );
-  console.log("selectedFrame", selectedFrame);
+  // console.log("selectedFrame", selectedFrame);
 
-  let data = QRres?.singleViewDetail?.[0]?.outcome;
+  let data = QRres?.singleViewDetail?.outcome;
   console.log("QRres?.singleViewDetail?.outcome", data);
-  let dotColor = QRres?.singleViewDetail?.[0]?.style?.dotsColor;
-  let CornerbgColor =
-    QRres?.singleViewDetail?.[0]?.style?.cornerBackgroundColor;
-  let cornerBorderColor =
-    QRres?.singleViewDetail?.[0]?.style?.cornerBorderColor;
-  let cornerDotColor = QRres?.singleViewDetail?.[0]?.style?.cornerDotColor;
-  let selectedDotStyle = QRres?.singleViewDetail?.[0]?.style?.dotsStyle;
-  let selectedCornerStyle = QRres?.singleViewDetail?.[0]?.style?.cornerStyle;
+  let dotColor = QRres?.singleViewDetail?.style?.dotsColor;
+  let CornerbgColor = QRres?.singleViewDetail?.style?.cornerBackgroundColor;
+  let cornerBorderColor = QRres?.singleViewDetail?.style?.cornerBorderColor;
+  let cornerDotColor = QRres?.singleViewDetail?.style?.cornerDotColor;
+  let selectedDotStyle = QRres?.singleViewDetail?.style?.dotsStyle;
+  let selectedCornerStyle = QRres?.singleViewDetail?.style?.cornerStyle;
   //FRAME
-  let frameColor = QRres?.singleViewDetail?.[0]?.style?.frameColor;
-  let frameBgColor = QRres?.singleViewDetail?.[0]?.style?.backgroundColor;
-  let frameText = QRres?.singleViewDetail?.[0]?.style?.frameText;
-  let frameTextColor = QRres?.singleViewDetail?.[0]?.style?.frameTextColor;
+  let frameColor = QRres?.singleViewDetail?.style?.frameColor;
+  let frameBgColor = QRres?.singleViewDetail?.style?.backgroundColor;
+  let frameText = QRres?.singleViewDetail?.style?.frameText;
+  let frameTextColor = QRres?.singleViewDetail?.style?.frameTextColor;
 
-  console.log("datta", data);
+  // console.log("datta", data);
 
   const qrCodeOptions = {
     width: 130,
@@ -56,17 +54,17 @@ const QRIMAGESHOW = () => {
     },
     cornersSquareOptions: {
       color: "#000000",
-      type: selectedCornerStyle, // This will dynamically change
+      type: selectedCornerStyle,
     },
     cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
+      color: cornerDotColor,
     },
     backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
+      color: CornerbgColor,
     },
     cornersSquareOptions: {
       color: cornerBorderColor,
-      type: selectedCornerStyle, // Update corner style on change
+      type: selectedCornerStyle, 
     },
   };
 
