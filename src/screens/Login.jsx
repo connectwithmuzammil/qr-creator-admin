@@ -21,12 +21,14 @@ const Login = () => {
     },
     onSuccess: ({ data: loginSucess, status }) => {
       console.log("loginSucessfully!!:", loginSucess);
-      if (loginSucess?.success) {
+      if (loginSucess?.data?.user?.role === "admin") {
         toast.success(loginSucess?.message);
         setShowLoginModal(false);
         navigate("/dashboard");
         dispatch(setUser(loginSucess?.data));
         localStorage.setItem("token", loginSucess?.token);
+      }else{
+        toast.error("Access denied. Only admins can access this section.");
       }
     },
   });

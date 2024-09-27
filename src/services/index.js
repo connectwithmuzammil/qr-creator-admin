@@ -58,12 +58,21 @@ const createBackendServer = (baseURL) => {
   const updateSingleUser = (body) => api.post(`admin/updateuser`, body);
   const deleteSingleUser = (id) => api.delete(`admin/canceluser/${id}`);
   const getQrList = () => api.get(`admin/qrlist`);
+  const getSingleQr = (id) => api.get(`admin/Get_qr/${id}`);
+  const generateQrCode = (body) => api.post("generate", body);
+  // const generateQrCode = (body) =>
+  //   api.post("generate", body, {
+  //     headers: {
+  //       Authorization: null,
+  //     },
+  //   });
 
   // ANALYTICS
   const getQrStats = () => api.get(`admin/qr_stats_system`);
-  const getQrScanActivity = (filter) => api.get(`admin/qr_stats?filter=${filter}`);
+  const getQrScanActivity = (filter) =>
+    api.get(`admin/qr_stats?filter=${filter}`);
   const getQrCount = () => api.get(`admin/analytics`);
-  
+
   //Returning all the API
   return {
     signup,
@@ -80,7 +89,9 @@ const createBackendServer = (baseURL) => {
     getQrStats,
     getQrList,
     getQrScanActivity,
-    getQrCount
+    getQrCount,
+    getSingleQr,
+    generateQrCode,
   };
 };
 

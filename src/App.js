@@ -7,13 +7,14 @@ import {
   AllQrList,
   HomeAdminDashboard,
   Login,
+  QRDetail,
   QRIMAGESHOW,
   UserAnalytics,
   UserBilling,
   UserListing,
   UserSubscription,
 } from "./screens";
-import { PrivateRoute, ScrollToTop } from "./components";
+import { PrivateRoute, QRDesign, ScrollToTop } from "./components";
 import { useSelector } from "react-redux";
 
 const App = () => {
@@ -48,12 +49,11 @@ const App = () => {
           path="/user-analytics"
           element={<PrivateRoute element={UserAnalytics} />}
         />
-        <Route
-          path="/qr-list"
-          element={<PrivateRoute element={AllQrList} />}
-        />
-        <Route path="/qr-image" element={<QRIMAGESHOW />} />
+        <Route path="/qr-list" element={<PrivateRoute element={AllQrList} />} />
 
+        <Route path="/qr-editor/:type" element={<QRDetail />} />
+        <Route path="/qr-editor/:type/design" element={<QRDesign />} />
+        <Route path="/qr-image" element={<QRIMAGESHOW />} />
       </Routes>
     </>
   );
