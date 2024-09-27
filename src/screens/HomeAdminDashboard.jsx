@@ -9,6 +9,7 @@ import {
   FaUserCheck,
   FaUserTimes,
 } from "react-icons/fa";
+import { AiOutlineEye } from "react-icons/ai";
 import apis from "../services";
 import { useQuery } from "@tanstack/react-query";
 
@@ -84,12 +85,21 @@ const HomeAdminDashboard = () => {
                   : "0"}
               </p>
             </div>
-            <div className="cardd full-width">
+            <div className="cardd ">
               <FaQrcode className="card-icon" />
               <h3>Total QR-Scan</h3>
               <p>
                 {getAllUserCount?.total_qr_scan
                   ? getAllUserCount?.total_qr_scan
+                  : "0"}
+              </p>
+            </div>
+            <div className="cardd ">
+            <AiOutlineEye className="card-icon" />
+            <h3>Total QR-Views</h3>
+              <p>
+                {getAllUserCount?.total_qr_views
+                  ? getAllUserCount?.total_qr_views
                   : "0"}
               </p>
             </div>
