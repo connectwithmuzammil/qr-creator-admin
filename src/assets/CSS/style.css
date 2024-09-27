@@ -3809,6 +3809,12 @@ p.social-con-content {
     height: 100%;
     object-fit: contain;
 }
+.all-qrList .result-cardd .one .img-con  canvas{
+  width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 5px;
+}
 .all-qrList .result-cardd .one .content-wrap{}
 .all-qrList .result-cardd .one .content-wrap h4{
   color: #e0201c;
