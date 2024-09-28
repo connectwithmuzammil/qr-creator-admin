@@ -84,6 +84,8 @@ const FacilitiesIcon = {
 };
 
 const BUSINESS = ({ qrData, setQrData }) => {
+  const [imagePreview, setImagePreview] = useState(null);
+
   //EDIT
   const location = useLocation();
   console.log("LOCATIONURLBusiness", location);
@@ -91,7 +93,7 @@ const BUSINESS = ({ qrData, setQrData }) => {
   useEffect(() => {
     if (location.state?.qrData) {
       const qrDataFromLocation = location.state.qrData.data;
-      console.log("qrDataFromLocation",qrDataFromLocation)
+      console.log("qrDataFromLocation", qrDataFromLocation);
       setQrData(qrDataFromLocation);
 
       // If there's color data in qrData, ensure it's set correctly
@@ -109,19 +111,23 @@ const BUSINESS = ({ qrData, setQrData }) => {
           business_social: qrDataFromLocation?.business_social,
         }));
       }
+
+      if (qrDataFromLocation?.business_page?.business_logo) {
+        setImagePreview(qrDataFromLocation?.business_page?.business_logo);
+      }
     }
   }, [location.state, setQrData]);
 
-  console.log("updatedQrData",qrData)
+  console.log("updatedQrDataBusiness", qrData);
 
   const [is24HourFormat, setIs24HourFormat] = useState(false);
-  const handleImageUpload = (mediaData, name) => {
+  const handleImageUpload = (mediaData, name, file) => {
     console.log("Received media data", mediaData); // media data base64
     console.log("Received media name", name); // media name
 
     setQrData((prevData) => ({
       ...prevData,
-      [name]: mediaData,
+      [name]: file,
     }));
   };
   const handleInputChange = (e) => {
@@ -202,25 +208,34 @@ const BUSINESS = ({ qrData, setQrData }) => {
           </AccordianComponent>
           <AccordianComponent title={"Business information"}>
             <ImageUploadComponent
-              defaultImage={"/assets/images/default-img.png"}
+              defaultImage={imagePreview || "/assets/images/default-img.png"}
               onImageUpload={handleImageUpload}
               //   onImageDelete={handleImageDelete}
               label="Logo"
-              name="business_image"
+              name="business_logo"
             />
             <InputComponent
               label={"Company name"}
               name={"business_company"}
               placeholder={"e.g. Artisan Bakery"}
               onChange={handleInputChange}
-              value={qrData?.business_company}
+              // value={
+              //   qrData?.business_company ||
+              //   qrData?.business_page?.business_company
+              // }
+              value={
+                qrData?.business_company ??
+                qrData?.business_page?.business_company
+              }
             />
             <InputComponent
               label={"Title"}
               name={"business_title"}
               placeholder={"e.g. Fresh Bread and Pastries"}
               onChange={handleInputChange}
-              value={qrData?.business_title}
+              value={
+                qrData?.business_title ?? qrData?.business_page?.business_title
+              }
             />
             <InputComponent
               label={"Subtitle"}
@@ -229,7 +244,10 @@ const BUSINESS = ({ qrData, setQrData }) => {
                 "e.g. Delicious bread and pastries baked daily. vVsit our bakery or order online."
               }
               onChange={handleInputChange}
-              value={qrData?.business_subtitle}
+              value={
+                qrData?.business_subtitle ??
+                qrData?.business_page?.business_subtitle
+              }
             />
             <div className="wrap-inp-cmp">
               <InputComponent
@@ -237,14 +255,19 @@ const BUSINESS = ({ qrData, setQrData }) => {
                 name={"business_btn_text"}
                 placeholder={"e.g. View our products"}
                 onChange={handleInputChange}
-                value={qrData?.business_btn_text}
+                value={
+                  qrData?.business_btn_text ??
+                  qrData?.business_page?.business_btn_text
+                }
               />
               <InputComponent
                 label={"URL"}
                 name={"business_url"}
                 placeholder={"e.g. https://URL here"}
                 onChange={handleInputChange}
-                value={qrData?.business_url}
+                value={
+                  qrData?.business_url ?? qrData?.business_page?.business_url
+                }
               />
             </div>
           </AccordianComponent>
@@ -255,6 +278,7 @@ const BUSINESS = ({ qrData, setQrData }) => {
               setIs24HourFormat={setIs24HourFormat}
             />
           </AccordianComponent>
+
           <AccordianComponent title={"Location"}>
             <div className="wrap-inp-cmp">
               <InputComponent
@@ -262,21 +286,30 @@ const BUSINESS = ({ qrData, setQrData }) => {
                 name={"business_address"}
                 placeholder={"e.g. High Street"}
                 onChange={handleInputChange}
-                value={qrData?.business_address}
+                value={
+                  qrData?.business_address ??
+                  qrData?.business_page?.business_address
+                }
               />
               <InputComponent
                 label={"Number"}
                 name={"business_numeration"}
                 placeholder={"e.g. 10"}
                 onChange={handleInputChange}
-                value={qrData?.business_numeration}
+                value={
+                  qrData?.business_numeration ??
+                  qrData?.business_page?.business_numeration
+                }
               />
               <InputComponent
                 label={"Zip code"}
                 name={"business_postalcode"}
                 placeholder={"e.g. 12548"}
                 onChange={handleInputChange}
-                value={qrData?.business_postalcode}
+                value={
+                  qrData?.business_postalcode ??
+                  qrData?.business_page?.business_postalcode
+                }
               />
             </div>
             <div className="wrap-inp-cmp">
@@ -285,21 +318,29 @@ const BUSINESS = ({ qrData, setQrData }) => {
                 name={"business_city"}
                 placeholder={"e.g. New York"}
                 onChange={handleInputChange}
-                value={qrData?.business_city}
+                value={
+                  qrData?.business_city ?? qrData?.business_page?.business_city
+                }
               />
               <InputComponent
                 label={"State"}
                 name={"business_state"}
                 placeholder={"e.g. 10"}
                 onChange={handleInputChange}
-                value={qrData?.business_state}
+                value={
+                  qrData?.business_state ??
+                  qrData?.business_page?.business_state
+                }
               />
               <InputComponent
                 label={"Country"}
                 name={"business_country"}
                 placeholder={"e.g. USA"}
                 onChange={handleInputChange}
-                value={qrData?.business_country}
+                value={
+                  qrData?.business_country ??
+                  qrData?.business_page?.business_country
+                }
               />
             </div>
           </AccordianComponent>
@@ -307,6 +348,7 @@ const BUSINESS = ({ qrData, setQrData }) => {
             <FacilitiesIconComp
               icons={FacilitiesIcon}
               onIconClick={handleFacilitiesIconChange}
+              initialSelectedIcons={qrData.business_facilities}
             />
           </AccordianComponent>
           <AccordianComponent title={"Contact information"}>
@@ -315,28 +357,37 @@ const BUSINESS = ({ qrData, setQrData }) => {
               name={"business_name"}
               placeholder={"e.g. John Smith"}
               onChange={handleInputChange}
-              value={qrData?.business_name}
+              value={
+                qrData?.business_name ?? qrData?.business_page?.business_name
+              }
             />
             <InputComponent
               label={"Phone"}
               name={"business_phone"}
               placeholder={"e.g. (123)-123-123-123"}
               onChange={handleInputChange}
-              value={qrData?.business_phone}
+              value={
+                qrData?.business_phone ?? qrData?.business_page?.business_phone
+              }
             />
             <InputComponent
               label={"Email"}
               name={"business_email"}
               placeholder={"e.g. youremail@domain.com"}
               onChange={handleInputChange}
-              value={qrData?.business_email}
+              value={
+                qrData?.business_email ?? qrData?.business_page?.business_email
+              }
             />
             <InputComponent
               label={"Website"}
               name={"business_website"}
               placeholder={"e.g. https://www.artisian-bakery.com"}
               onChange={handleInputChange}
-              value={qrData?.business_website}
+              value={
+                qrData?.business_website ??
+                qrData?.business_page?.business_website
+              }
             />
           </AccordianComponent>
           <AccordianComponent title={"About the company"}>
@@ -346,7 +397,9 @@ const BUSINESS = ({ qrData, setQrData }) => {
                 "e.g. Indicate your business opening hour and/or any relevant information about it"
               }
               onChange={handleInputChange}
-              value={qrData?.business_about}
+              value={
+                qrData?.business_about ?? qrData?.business_page?.business_about
+              }
             />
           </AccordianComponent>
           <AccordianComponent title={"Social networks"}>

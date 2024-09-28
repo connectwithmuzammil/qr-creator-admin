@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUpload, FaTrash } from "react-icons/fa";
 import { AccordianComponent } from "../AccordianComponent";
 import { InputComponent } from "../InputComponent";
@@ -10,6 +10,7 @@ import {
 } from "../../Helper/SocialSvgIcons";
 import SocialIconsComp from "../SocialIconComp";
 import ImageUploadComponent from "../ImageUploadComp";
+import { useLocation } from "react-router-dom";
 
 const colors = [
   { id: "blue", background: "#d1e5fa", button: "#1466b8" },
@@ -25,6 +26,35 @@ const icons = {
 };
 
 const APPS = ({ qrData, setQrData }) => {
+  const [imagePreview, setImagePreview] = useState(null);
+
+  //EDIT
+  const location = useLocation();
+  console.log("LOCATIONURLSOCAPP", location);
+
+  useEffect(() => {
+    if (location.state?.qrData) {
+      const qrDataFromLocation = location.state.qrData.data;
+      console.log("qrDataFromLocation", qrDataFromLocation);
+      setQrData(qrDataFromLocation);
+
+      // If there's color data in qrData, ensure it's set correctly
+      if (qrDataFromLocation?.color) {
+        setQrData((prevQrData) => ({
+          ...prevQrData,
+          color: qrDataFromLocation?.color,
+        }));
+      }
+
+      // if (qrDataFromLocation?.app_social) {
+      //   setQrData((prevQrData) => ({
+      //     ...prevQrData,
+      //     app_social: qrDataFromLocation?.app_social,
+      //   }));
+      // }
+    }
+  }, [location.state, setQrData]);
+
   const handleImageUpload = (image) => {
     console.log("Image uploaded:", image);
   };
@@ -40,6 +70,17 @@ const APPS = ({ qrData, setQrData }) => {
       [name]: value,
     }));
   };
+  const handleSocialIconChange = (iconName, url) => {
+    console.log("ICONS NAME, URL", iconName, url);
+    setQrData((prevData) => ({
+      ...prevData,
+      app_social: {
+        ...prevData.app_social,
+        [iconName]: url,
+      },
+    }));
+  };
+
   return (
     <div className="app-page">
       <div className="containerr">
@@ -97,7 +138,12 @@ const APPS = ({ qrData, setQrData }) => {
           </AccordianComponent>
           <AccordianComponent title={"Links to platforms"}>
             <p className="social-con-content">Add at least one link to...</p>
-            <SocialIconsComp icons={icons} className={"app-social"} />
+            <SocialIconsComp
+              icons={icons}
+              onIconClick={handleSocialIconChange}
+              className={"app-social"}
+              initialLinks={qrData?.app_social}
+            />
           </AccordianComponent>
         </div>
         <div className="right">

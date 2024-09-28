@@ -90,7 +90,7 @@ const ImageUploadComponent = ({
  
         setImage(reader.result);
         if (onImageUpload) {
-          onImageUpload(reader.result,name);
+          onImageUpload(reader.result,name,file);
         }
       };
       reader.readAsDataURL(file);

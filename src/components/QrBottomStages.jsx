@@ -78,48 +78,35 @@ function BottomWrapperStages({
         formData.append("id", generateQrPayload.id);
       }
 
-      if (generateQrPayload?.landing_logo) {
-        appendBase64ToFormData(
-          formData,
-          generateQrPayload?.landing_logo,
-          "landing_logo"
-        );
+      if (generateQrPayload?.landing_logo instanceof File) {
+        formData.append("landing_logo", generateQrPayload?.landing_logo);
+
       }
 
-      if (generateQrPayload?.gallery_image) {
-        appendBase64ToFormData(
-          formData,
-          generateQrPayload?.gallery_image,
-          "gallery_image"
-        );
+      if (generateQrPayload?.gallery_image instanceof File) {
+        formData.append("gallery_image", generateQrPayload?.gallery_image);
+
       }
-      if (generateQrPayload?.links_image) {
-        appendBase64ToFormData(
-          formData,
-          generateQrPayload?.links_image,
-          "links_image"
-        );
+      if (generateQrPayload?.links_image instanceof File) {
+        formData.append("links_image", generateQrPayload?.links_image);
       }
-      if (generateQrPayload?.vcard_image) {
-        appendBase64ToFormData(
-          formData,
-          generateQrPayload?.vcard_image,
-          "vcard_image"
-        );
+      // if (generateQrPayload?.vcard_image) {
+      //   appendBase64ToFormData(
+      //     formData,
+      //     generateQrPayload?.vcard_image,
+      //     "vcard_image"
+      //   );
+      // }
+      if (generateQrPayload?.vcard_image instanceof File) {
+        formData.append("vcard_image", generateQrPayload?.vcard_image);
       }
-      if (generateQrPayload?.business_image) {
-        appendBase64ToFormData(
-          formData,
-          generateQrPayload?.business_image,
-          "business_image"
-        );
+      if (generateQrPayload?.business_image instanceof File) {
+        formData.append("business_image", generateQrPayload?.business_image);
+
       }
-      if (generateQrPayload?.event_image) {
-        appendBase64ToFormData(
-          formData,
-          generateQrPayload?.event_image,
-          "event_image"
-        );
+      if (generateQrPayload?.event_image instanceof File) {
+        formData.append("event_image", generateQrPayload?.event_image);
+
       }
 
       // Handle opening_hours_days
@@ -250,7 +237,7 @@ function BottomWrapperStages({
           key !== "business_image" &&
           key !== "opening_hours_days" &&
           key !== "event_image" &&
-          key !== "pdf_file" 
+          key !== "pdf_file"
         ) {
           // Skip 'landing_logo' since it's already handled as a blob
           formData.append(key, generateQrPayload[key]);
@@ -272,7 +259,6 @@ function BottomWrapperStages({
       // if (generateQrPayload?.pdf_file instanceof File) {
       //   formData.append("pdf_file", generateQrPayload.pdf_file);
       // }
-      
 
       console.log("formData", formData);
       for (let [key, value] of formData.entries()) {

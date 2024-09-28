@@ -1,7 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const FacilitiesIconComp = ({ icons, onIconClick }) => {
+const FacilitiesIconComp = ({ icons, onIconClick, initialSelectedIcons }) => {
   const [selectedIcons, setSelectedIcons] = useState([]); // Track selected icons
+
+  useEffect(() => {
+    // Initialize selected icons from props when component mounts
+    const initializedIcons = initialSelectedIcons 
+      ? Object.keys(initialSelectedIcons).filter(key => initialSelectedIcons[key]) 
+      : [];
+    setSelectedIcons(initializedIcons);
+  }, [initialSelectedIcons]);
 
   const handleIconClick = (iconKey) => {
     // Toggle selection state
@@ -11,12 +19,12 @@ const FacilitiesIconComp = ({ icons, onIconClick }) => {
       if (isSelected) {
         // Remove from selected icons
         const updatedIcons = prevSelectedIcons.filter((key) => key !== iconKey);
-        onIconClick(iconKey, false); // Pass to parent that it's deselected
+        onIconClick(iconKey, false); // Notify parent that it's deselected
         return updatedIcons;
       } else {
         // Add to selected icons
         const updatedIcons = [...prevSelectedIcons, iconKey];
-        onIconClick(iconKey, true); // Pass to parent that it's selected
+        onIconClick(iconKey, true); // Notify parent that it's selected
         return updatedIcons;
       }
     });

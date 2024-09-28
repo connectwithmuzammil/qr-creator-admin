@@ -28,7 +28,7 @@ const createBackendServer = (baseURL) => {
       if (error?.response?.data?.errors)
         error.errors = error?.response?.data?.errors;
       if (error?.response?.status === 401) {
-        // window.location.href = "/logout";
+        window.location.href = "/login";
       }
 
       return Promise.reject(error);

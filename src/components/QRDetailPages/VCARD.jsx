@@ -80,13 +80,13 @@ const VCARD = ({ qrData, setQrData }) => {
     }
   }, [location.state, setQrData]);
 
-  const handleImageUpload = (mediaData, name) => {
+  const handleImageUpload = (mediaData, name,file) => {
     console.log("Received media data", mediaData); // media data base64
     console.log("Received media name", name); // media name
 
     setQrData((prevData) => ({
       ...prevData,
-      [name]: mediaData,
+      [name]: file,
     }));
   };
   const handleImageDelete = () => {

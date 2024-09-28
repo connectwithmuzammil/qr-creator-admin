@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AccordianComponent } from "../AccordianComponent";
 import { InputComponent } from "../InputComponent";
 import CutsomColorPickerComp from "../CutsomColorPickerComp";
@@ -24,6 +24,7 @@ import {
 } from "../../Helper/SocialSvgIcons";
 import ImageUploadComponent from "../ImageUploadComp";
 import SocialIconsComp from "../SocialIconComp";
+import { useLocation } from "react-router-dom";
 
 const colors = [
   { id: "blue", background: "#d1e5fa", button: "#1466b8" },
@@ -53,6 +54,34 @@ const icons = {
 };
 
 const Social = ({ qrData, setQrData }) => {
+  //EDIT
+  const location = useLocation();
+  console.log("LOCATIONURLSOCIAL", location);
+
+  useEffect(() => {
+    if (location.state?.qrData) {
+      const qrDataFromLocation = location.state.qrData.data;
+      console.log("qrDataFromLocation", qrDataFromLocation);
+      setQrData(qrDataFromLocation);
+
+      // If there's color data in qrData, ensure it's set correctly
+      if (qrDataFromLocation?.color) {
+        setQrData((prevQrData) => ({
+          ...prevQrData,
+          color: qrDataFromLocation?.color,
+        }));
+      }
+
+      // Set initial vcard_social links if present (edit mode)
+      if (qrDataFromLocation?.media_social) {
+        setQrData((prevQrData) => ({
+          ...prevQrData,
+          media_social: qrDataFromLocation?.media_social,
+        }));
+      }
+    }
+  }, [location.state, setQrData]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setQrData((prevData) => ({
@@ -128,10 +157,12 @@ const Social = ({ qrData, setQrData }) => {
             />
           </AccordianComponent>
           <AccordianComponent title={"Social Media Channels"}>
-            <SocialIconsComp
+            {/* <SocialIconsComp
               icons={icons}
               onIconClick={handleSocialIconChange}
-            />
+              initialLinks={qrData?.business_social}
+              
+            /> */}
           </AccordianComponent>
         </div>
         <div className="right">
