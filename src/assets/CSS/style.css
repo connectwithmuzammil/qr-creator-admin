@@ -3799,6 +3799,7 @@ p.social-con-content {
   display: flex;
   flex: 1 1;
   gap: 8px;
+  min-width: 250px;
 }
 .all-qrList .result-cardd .one .img-con {
   width: 80px;
@@ -3839,6 +3840,10 @@ p.social-con-content {
   font-family: "Nunito Sans", sans-serif;
   margin: 0;
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
 }
 .all-qrList .result-cardd .two .modifiedDate-con .wrap {
   align-items: center;
@@ -3896,9 +3901,11 @@ p.social-con-content {
 .all-qrList .result-cardd .four h1 {
   color: #000;
   font-family: poppins, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 800;
   margin: 0;
+  text-align: center;
+  word-break: break-all;
 }
 .all-qrList .result-cardd .five {
   align-items: center;
