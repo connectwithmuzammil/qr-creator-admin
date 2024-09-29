@@ -1975,18 +1975,21 @@ footer .bottom p {
 .qr-design .containerr .right .qr-preview {
 }
 .qr-preview svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* position: absolute; */
+  /* top: 50%; */
+  /* left: 50%;
+  transform: translate(-50%, -50%); */
+  margin: 40px 0px;
   width: 100%;
-  height: 300px;
+  height: 200px;
 }
 .qr-preview .notselectSvg {
-  position: absolute;
+  /* position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
+  margin: 40px 0px;
+  text-align: center;
   /* width: 100%; */
   height: 300px;
 }
@@ -3545,7 +3548,7 @@ p.social-con-content {
   display: none;
   position: absolute;
   background-color: #fff;
-  min-width: 120px;
+  min-width: 140px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
@@ -3768,8 +3771,14 @@ p.social-con-content {
 /* ALL QR LIST */
 .all-qrList {
 }
+.all-qrList .no-data-message {
+  text-align: center;}
+.all-qrList .no-data-message h3 {
+  font-family: poppins, sans-serif;
+  color: #404040;
+  font-weight: 500;
+}
 .all-qrList .result-cardd {
-  
 }
 .all-qrList .result-cardd .result-cardd-wrapper {
   /* background-color: #fcfcfc; */
@@ -3791,39 +3800,40 @@ p.social-con-content {
   flex: 1 1;
   gap: 8px;
 }
-.all-qrList .result-cardd .one .img-con{
+.all-qrList .result-cardd .one .img-con {
   width: 80px;
   height: 80px;
   object-fit: contain;
   border: 1px solid #e0201c;
   border-radius: 4px;
 }
-.all-qrList .result-cardd .one .img-con svg{
+.all-qrList .result-cardd .one .img-con svg {
   width: 80px;
-    height: 80px;
-    object-fit: contain;
-    padding: 5px;
+  height: 80px;
+  object-fit: contain;
+  padding: 5px;
 }
-.all-qrList .result-cardd .one .img-con svg canvas{
+.all-qrList .result-cardd .one .img-con svg canvas {
   width: 100%;
-    height: 100%;
-    object-fit: contain;
+  height: 100%;
+  object-fit: contain;
 }
-.all-qrList .result-cardd .one .img-con  canvas{
+.all-qrList .result-cardd .one .img-con canvas {
   width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 5px;
+  height: 100%;
+  object-fit: contain;
+  padding: 5px;
 }
-.all-qrList .result-cardd .one .content-wrap{}
-.all-qrList .result-cardd .one .content-wrap h4{
+.all-qrList .result-cardd .one .content-wrap {
+}
+.all-qrList .result-cardd .one .content-wrap h4 {
   color: #e0201c;
-    font-size: 16px;
-    font-family: "Nunito Sans", sans-serif;
-    margin: 0;
-    font-weight: 600;
+  font-size: 16px;
+  font-family: "Nunito Sans", sans-serif;
+  margin: 0;
+  font-weight: 600;
 }
-.all-qrList .result-cardd .one .content-wrap h3{
+.all-qrList .result-cardd .one .content-wrap h3 {
   color: #404040;
   font-size: 14px;
   font-family: "Nunito Sans", sans-serif;
@@ -3897,7 +3907,7 @@ p.social-con-content {
   gap: 8px;
   align-items: center;
 }
-.all-qrList .result-cardd .five p{
+.all-qrList .result-cardd .five p {
   margin: 0;
   padding: 5px 12px;
   border-radius: 4px;
@@ -3910,7 +3920,7 @@ p.social-con-content {
   align-items: center;
   gap: 5px;
 }
-.all-qrList .result-cardd .five button{
+.all-qrList .result-cardd .five button {
   border: 1px solid #e0201c;
   border-radius: 4px;
   color: #e0201c;
@@ -3923,10 +3933,98 @@ p.social-con-content {
   background-color: transparent;
 }
 
-.all-qrList .result-cardd .two{
+.all-qrList .result-cardd .two {
   align-items: center;
   display: flex;
   flex: 1 1;
   flex-direction: column;
   gap: 2px;
+}
+
+
+/* QRDETAIL */
+.qrDetailsPage{
+  padding-inline: 80px;
+}
+.qrDetailsPage .userAnalyticscon{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.qrDetailsPage .userAnalyticscon .cardd{
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: calc(50% - 10px);
+  text-align: center;
+  text-align: center;
+  border: 1px solid #f3ecec;
+}
+.qrDetailsPage .userAnalyticscon .cardd svg{
+  font-size: 24px;
+    color: #e0201c;
+    margin-bottom: 10px;
+}
+.qrDetailsPage .userAnalyticscon .cardd h3{
+  margin: 10px 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: poppins, sans-serif;
+}
+.qrDetailsPage .userAnalyticscon .cardd p{
+  font-size: 18px;
+  color: #555;
+  font-family: poppins, sans-serif;
+  font-weight: 500;
+}
+.qrDetailsPage .all-card-con{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+.qrDetailsPage .all-card-con .cardd p{
+  color: #000;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.qrDetailsPage .all-card-con .cardd{
+  background-color: #fcfcfc;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 8px 0 #5959592e;
+  height: 350px;
+  padding: 1.5rem;
+  flex: 1;
+}
+.qrDetailsPage .graph-con {
+  background-color: #fcfcfc;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 8px 0 #5959592e;
+  height: 350px;
+  padding: 1.5rem;
+  flex: 1;
+  margin-bottom: 40px;
+}
+.qrDetailsPage .graph-con p{
+  color: #000;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+.qrDetailsPage .stats-txt{
+  color: #000;
+  font-family: Nunito Sans, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }

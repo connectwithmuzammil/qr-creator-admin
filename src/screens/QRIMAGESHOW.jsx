@@ -15,11 +15,18 @@ import {
   NotSelectedFrameCanvas,
 } from "../components/SVGIcon";
 import QRCodeStyling from "qr-code-styling";
+import { FaQrcode } from "react-icons/fa";
+import { AiOutlineEye } from "react-icons/ai";
+import { BarChartAnalytics, LineChartComp } from "../components";
 
 const QRIMAGESHOW = () => {
+  const [dataOS, setDataOS] = useState([]);
+  const [dataCountry, setDataCountry] = useState([]);
+  const [dataCity, setDataCity] = useState([]);
+
   const location = useLocation();
   const QRres = location.state || {};
-  console.log("QRres", QRres?.singleViewDetail);
+  console.log("QRres", QRres);
 
   const qrCode = useRef(null);
 
@@ -64,7 +71,7 @@ const QRIMAGESHOW = () => {
     },
     cornersSquareOptions: {
       color: cornerBorderColor,
-      type: selectedCornerStyle, 
+      type: selectedCornerStyle,
     },
   };
 
@@ -72,6 +79,42 @@ const QRIMAGESHOW = () => {
     qrCode.current = new QRCodeStyling(qrCodeOptions);
     qrCode.current.append(document.getElementById("qrCode"));
   }, []);
+
+  useEffect(() => {
+    if (QRres?.statsDataSystem?.data) {
+      const {
+        os = [],
+        countries = [],
+        cities = [],
+      } = QRres?.statsDataSystem?.data;
+
+      // Format the data for each category
+      setDataOS(os.map(({ name, scans }) => ({ name, scans })));
+      setDataCountry(countries.map(({ name, scans }) => ({ name, scans })));
+      setDataCity(cities.map(({ name, scans }) => ({ name, scans })));
+    }
+  }, [QRres?.statsDataSystem]);
+
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  // Format API data for the chart
+  const formattedData = QRres?.statsDataScanActivity?.data?.map((item) => ({
+    name: monthNames[item.month - 1], // Convert month number to month name
+    scans: item.scans,
+  }));
 
   const renderFrame = () => {
     switch (selectedFrame) {
@@ -273,20 +316,114 @@ const QRIMAGESHOW = () => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        // flexDirection: "column",
-        height: "100vh",
-        padding: "50px",
-      }}
-      className="qr-image-show-delete"
+      // style={{
+      //   display: "flex",
+      //   justifyContent: "center",
+      //   alignItems: "center",
+      //   height: "100vh",
+      //   padding: "50px",
+      // }}
+      // className="qr-image-show-delete"
+      className="qrDetailsPage"
     >
       <div className="qr-preview">
         <div className="img-con">
           {renderFrame()}
           <div className="frame-overlay" style={{ position: "static" }}></div>
+        </div>
+      </div>
+      <div className="userAnalyticscon">
+        <div className="cardd">
+          <FaQrcode />
+          <h3>Total QR</h3>
+          <p>{QRres?.statsData?.total_qr ? QRres?.statsData?.total_qr : "0"}</p>
+        </div>
+        <div className="cardd">
+          <AiOutlineEye />
+          <h3>Total Scan</h3>
+          <p>
+            {QRres?.statsData?.total_scan ? QRres?.statsData?.total_scan : "0"}
+          </p>
+        </div>
+      </div>
+
+      <div className="graph-con" style={{ width: "100%", height: "400px" }}>
+        <div className="main-filter-con">
+          <p>Scans Activity </p>
+        </div>
+
+        {false ? (
+          <h4>Loading...</h4>
+        ) : (
+          <>
+            {formattedData && formattedData.length > 0 ? (
+              <LineChartComp data={formattedData} />
+            ) : (
+              <h4 className="stats-txt">Need more data to show statistics</h4>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="all-card-con">
+        <div className="cardd">
+          <p>Scans per operating system</p>
+          {QRres?.statsDataSystem?.data?.os?.length < 0 ? (
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "250px",
+              }}
+            >
+              Loading...
+            </p>
+          ) : dataOS && dataOS.length > 0 ? (
+            <BarChartAnalytics data={dataOS} />
+          ) : (
+            <h4 className="stats-txt">Need more data to show statistics</h4>
+          )}
+        </div>
+
+        <div className="cardd">
+          <p>Scans per country</p>
+          {QRres?.statsDataSystem?.data?.countries?.length < 0 ? (
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "250px",
+              }}
+            >
+              Loading...
+            </p>
+          ) : dataCountry && dataCountry.length > 0 ? (
+            <BarChartAnalytics data={dataCountry} />
+          ) : (
+            <h4 className="stats-txt">Need more data to show statistics</h4>
+          )}
+        </div>
+
+        <div className="cardd">
+          <p>Scans per city/region</p>
+          {QRres?.statsDataSystem?.data?.cities?.length < 0 ? (
+            <p
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "250px",
+              }}
+            >
+              Loading...
+            </p>
+          ) : dataCity && dataCity.length > 0 ? (
+            <BarChartAnalytics data={dataCity} />
+          ) : (
+            <h4 className="stats-txt">Need more data to show statistics</h4>
+          )}
         </div>
       </div>
     </div>

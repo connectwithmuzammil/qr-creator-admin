@@ -5,10 +5,13 @@ import apis from "../services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { FaEye } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const UserListing = () => {
   const [showUserModal, setShowUserModal] = useState(false);
   const [selectedSingleUser, setSelectedSingleUser] = useState(null);
+  const navigate = useNavigate();
+  
 
   const {
     isLoading,
@@ -23,7 +26,7 @@ const UserListing = () => {
       // toast.error("Failed to fetch products. Please try again later.");
     },
   });
-  console.log("getAllUserCount", getAllUserList);
+  console.log("getAllUserList", getAllUserList);
 
   const { mutate: mutateChangeUserStatus, isPending: isLoadingUserStatus } =
     useMutation({
@@ -102,6 +105,17 @@ const UserListing = () => {
     }
   };
 
+  //VIEW EACH QR CODE
+  const handleViewQRCode = async(userId) =>{
+    console.log("userId",userId);
+    let userQrRes = await apis.getEachUserQR(userId);
+    console.log("userQR",userQrRes?.data)
+
+    let userQrData = userQrRes.data;
+    // console.log("qrDataEdit", qrData);
+    navigate(`/qr-list`, { state: { userQrData } });
+  }
+
   if (isLoading) {
     return (
       <div className="loader-wrapper">
@@ -166,6 +180,9 @@ const UserListing = () => {
                             </button>
                             <button onClick={() => handleDeleteUser(user?.id)}>
                               Delete
+                            </button>
+                            <button onClick={() => handleViewQRCode(user?.id)}>
+                              View QR 
                             </button>
                           </div>
                         </div>

@@ -81,19 +81,31 @@ const ImageUploadComponent = ({
   // Generate a unique id for each instance of the component
   const uniqueId = `file-upload-${label.replace(/\s+/g, "-")}-${Math.random()}`;
 
+  // const handleImageUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+
+  //       setImage(reader.result);
+  //       if (onImageUpload) {
+  //         onImageUpload(reader.result,name,file);
+  //       }
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
- 
-        setImage(reader.result);
-        if (onImageUpload) {
-          onImageUpload(reader.result,name,file);
-        }
-      };
-      reader.readAsDataURL(file);
+      const imageUrl = URL.createObjectURL(file); // Generate a local URL for the file
+      setImage(imageUrl);
+
+      if (onImageUpload) {
+        // Pass the name (identifier), imageUrl, and file object to the parent handler
+        onImageUpload(imageUrl, name, file);
+      }
     }
   };
 

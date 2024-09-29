@@ -3,7 +3,7 @@ import { Sidebar } from "../components";
 import { useQuery } from "@tanstack/react-query";
 import apis from "../services";
 import { MdEdit } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   CanvaFrame1,
   CanvaFrame10,
@@ -20,6 +20,11 @@ import {
 } from "../components/SVGIcon";
 
 const AllQrList = () => {
+  const location = useLocation();
+  // console.log("singleUserQRCode",location);
+  const singleUserQRCode = location?.state?.userQrData;
+  console.log("singleUserQRCode", singleUserQRCode);
+
   const navigate = useNavigate();
   const {
     isLoading,
@@ -35,9 +40,26 @@ const AllQrList = () => {
   });
   console.log("getQrList", getQrList);
 
-  const handleViewDetail = (singleViewDetail) => {
+  const handleViewDetail = async (singleViewDetail) => {
     console.log("singleViewDetail", singleViewDetail);
-    navigate("/qr-image", { state: { singleViewDetail } });
+    let userQrStats = await apis.getEachUserQRStat(singleViewDetail?.id);
+    let statsData = userQrStats?.data;
+    let userQrSystem = await apis.getEachUserQRSystem(singleViewDetail?.id);
+    let statsDataSystem = userQrSystem?.data;
+    let userQrScanActivity = await apis.getEachUserQRScanActivity(
+      singleViewDetail?.id
+    );
+    // console.log("userQrScanActivity",userQrScanActivity?.data);
+    let statsDataScanActivity = userQrScanActivity?.data;
+
+    navigate("/qr-image", {
+      state: {
+        singleViewDetail,
+        statsData,
+        statsDataSystem,
+        statsDataScanActivity,
+      },
+    });
   };
 
   const renderFrame = (selectedFrame, qrCodeData, data) => {
@@ -243,7 +265,7 @@ const AllQrList = () => {
   };
 
   const handleEdit = async (id, type) => {
-    console.log("EDIT IDDD,type", id,type);
+    console.log("EDIT IDDD,type", id, type);
     try {
       let res = await apis.getSingleQr(id);
       let qrData = res.data;
@@ -261,19 +283,42 @@ const AllQrList = () => {
       </div>
     );
   }
+
+  const qrDataToDisplay = singleUserQRCode || getQrList;
+  console.log("qrDataToDisplay", qrDataToDisplay?.data[0]?.qrcodes?.length);
+
   return (
     <div className="qr-main-page all-qrList">
       <div className="userDashboard">
         <Sidebar />
         <div className="content-page">
-          <h1>USER QR LIST</h1>
-          {getQrList?.data?.length > 0 &&
-            getQrList?.data?.map((qrList) => {
+          <h1>{singleUserQRCode ? "USER QR LIST" : "ALL QR LIST"}</h1>
+          {/* Check if there is no QR data */}
+          {singleUserQRCode?.data[0]?.qrcodes?.length == 0 && (
+            <div className="no-data-message">
+              <h3>No QR codes available</h3>
+            </div>
+          )}
+          {qrDataToDisplay?.data?.length > 0 &&
+            qrDataToDisplay?.data?.map((qrList) => {
               if (qrList?.qrcodes?.length > 0) {
+                // Sort qrcodes by qr_name in alphabetical order (case-insensitive)
+                const sortedQRCodes = qrList?.qrcodes?.sort((a, b) => {
+                  const nameA = a.qr_name.toUpperCase(); // Ignore case
+                  const nameB = b.qr_name.toUpperCase(); // Ignore case
+                  if (nameA < nameB) {
+                    return -1;
+                  }
+                  if (nameA > nameB) {
+                    return 1;
+                  }
+                  return 0;
+                });
+
                 return (
                   <div className="result-cardd" key={qrList?.id}>
                     {console.log("qrList", qrList)}
-                    {qrList?.qrcodes?.map((qrCode, index) => {
+                    {sortedQRCodes.map((qrCode, index) => {
                       const selectedFrame = qrCode?.style?.frameName;
                       return (
                         <div className="result-cardd-wrapper" key={index}>
@@ -292,8 +337,11 @@ const AllQrList = () => {
                             </div>
                           </div>
                           <div className="two">
-                            <div class="modifiedDate-con" bis_skin_checked="1">
-                              <div class="wrap" bis_skin_checked="1">
+                            <div
+                              className="modifiedDate-con"
+                              bis_skin_checked="1"
+                            >
+                              <div className="wrap" bis_skin_checked="1">
                                 <svg
                                   stroke="currentColor"
                                   fill="currentColor"
@@ -308,7 +356,7 @@ const AllQrList = () => {
                                 </svg>
                                 <h6>Created: {qrCode?.created_date}</h6>
                               </div>
-                              <div class="wrap" bis_skin_checked="1">
+                              <div className="wrap" bis_skin_checked="1">
                                 <svg
                                   stroke="currentColor"
                                   fill="none"
@@ -341,15 +389,16 @@ const AllQrList = () => {
                             <button onClick={() => handleViewDetail(qrCode)}>
                               View
                             </button>
-
                             <p
-                            onClick={() => handleEdit(qrCode?.id, qrCode.type)}
-                          >
-                            Edit
-                            <span>
-                              <MdEdit size={14} />
-                            </span>
-                          </p>
+                              onClick={() =>
+                                handleEdit(qrCode?.id, qrCode.type)
+                              }
+                            >
+                              Edit
+                              <span>
+                                <MdEdit size={14} />
+                              </span>
+                            </p>
                           </div>
                         </div>
                       );

@@ -1,5 +1,5 @@
 import { BarChartAnalytics } from "./BarChartAnalytics";
-import LineChartComp from "./LineChart";
+import LineChartComp from "./LineChartComp";
 import Loader from "./Loader";
 import LoginModal from "./Modal/Auth/Login";
 import UserModal from "./Modal/UserModal";
