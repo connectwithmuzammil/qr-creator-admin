@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AccordianComponent } from "../AccordianComponent";
 import { InputComponent } from "../InputComponent";
 import CutsomColorPickerComp from "../CutsomColorPickerComp";
@@ -38,6 +38,7 @@ import {
 import ImageUploadComponent from "../ImageUploadComp";
 import FacilitiesIconComp from "../FacilitiesIconComp";
 import EventSchedularComp from "../EventSchedularComp";
+import { useLocation } from "react-router-dom";
 
 const colors = [
   { id: "blue", background: "#d1e5fa", button: "#1466b8" },
@@ -63,13 +64,39 @@ const FacilitiesIcon = {
 };
 
 const EVENT = ({ qrData, setQrData }) => {
-  const handleImageUpload = (mediaData, name) => {
+
+  const location = useLocation();
+  console.log("LOCATIONURL", location);
+
+  useEffect(() => {
+    if (location.state?.qrData) {
+      const qrDataFromLocation = location.state.qrData.data;
+      console.log("qrDataFromLocation",qrDataFromLocation)
+      const { event_image, ...restQrData } = qrDataFromLocation;
+      setQrData((prevQrData) => ({
+        ...prevQrData,
+        ...restQrData,
+      }));
+
+      // If there's color data in qrData, ensure it's set correctly
+      if (qrDataFromLocation.color) {
+        setQrData((prevQrData) => ({
+          ...prevQrData,
+          color: qrDataFromLocation.color,
+        }));
+      }
+
+    
+    }
+  }, [location.state, setQrData]);
+
+  const handleImageUpload = (mediaData, name,file) => {
     console.log("Received media data", mediaData); // media data base64
     console.log("Received media name", name); // media name
 
     setQrData((prevData) => ({
       ...prevData,
-      [name]: mediaData,
+      [name]: file,
     }));
   };
   const handleInputChange = (e) => {
@@ -251,6 +278,7 @@ const EVENT = ({ qrData, setQrData }) => {
             <FacilitiesIconComp
               icons={FacilitiesIcon}
               onIconClick={handleFacilitiesIconChange}
+              initialSelectedIcons={qrData?.event_facilities}
             />
           </AccordianComponent>
         </div>

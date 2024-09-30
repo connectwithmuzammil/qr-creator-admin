@@ -63,6 +63,7 @@ const QRDetail = () => {
     app_description: "",
     app_logo: "",
     app_website: "",
+    app_social: {},
     //LANDING
     landing_action_url: "",
     landing_company: "",
@@ -139,15 +140,15 @@ const QRDetail = () => {
 
     business_facilities: "",
     business_social: "",
-    business_image: "",
+    business_logo: "",
 
     //VIDEO
     video: null,
-    video_title: "",
+    video_name: "",
     video_description: "",
     video_button: " ",
     video_url: "",
-    video_social: "",
+    video_social: {},
 
     //EVENTS
     event_action_title: "",
@@ -197,8 +198,6 @@ const QRDetail = () => {
   const [qrData, setQrData] = useState(initialState);
   // console.log("qrDataqrData",qrData);
 
-
-
   useEffect(() => {
     setQrData((prevState) => ({
       ...prevState,
@@ -220,12 +219,32 @@ const QRDetail = () => {
         // await WifiSchema.validate(qrData);
       } else if (type === "video") {
         // await videoSchema.validate(qrData);
+      } else if (type === "image_gallery") {
+        if (!qrData?.gallery_image) {
+          toast.error("Please Upload Image");
+          return;
+        }
+      } else if (type === "vcard") {
+        if (!qrData?.vcard_image) {
+          toast.error("Please Upload Image");
+          return;
+        }
+      } else if (type === "business_page") {
+        if (!qrData?.business_logo) {
+          toast.error("Please Upload Logo");
+          return;
+        }
+      } else if (type === "events") {
+        if (!qrData?.event_image) {
+          toast.error("Please Upload Cover Image");
+          return;
+        }
       }
 
       const dataToSend = {
         type: qrData.type,
         style: qrData.style,
-        id: qrData?.id,
+        editID: qrData?.id,
         ...(type === "url"
           ? { field_url: qrData.field_url, qr_name: qrData.qr_name }
           : {}),
@@ -261,6 +280,7 @@ const QRDetail = () => {
               app_company: qrData?.app_company,
               app_description: qrData?.app_description,
               app_website: qrData?.app_website,
+              app_social: qrData?.app_social,
               color: qrData.color,
             }
           : {}),
@@ -275,7 +295,6 @@ const QRDetail = () => {
               landing_btn_text: qrData?.landing_btn_text,
               landing_social: qrData?.landing_social,
               color: qrData.color,
-             
             }
           : {}),
         ...(type === "social_media"
@@ -292,11 +311,11 @@ const QRDetail = () => {
           ? {
               qr_name: qrData?.qr_name,
               color: qrData.color,
+              gallery_image: qrData.gallery_image,
               gallery_title: qrData.gallery_title,
               gallery_description: qrData.gallery_description,
               gallery_website: qrData.gallery_website,
               gallery_url: qrData.gallery_url,
-              gallery_image: qrData.gallery_image,
             }
           : {}),
         ...(type === "links"
@@ -354,7 +373,7 @@ const QRDetail = () => {
               business_state: qrData?.business_state,
               business_facilities: qrData?.business_facilities,
               business_social: qrData?.business_social,
-              business_image: qrData?.business_image,
+              business_logo: qrData?.business_logo,
               opening_hours_days: qrData?.opening_hours_days,
               opening_hours_format: qrData?.opening_hours_format,
             }
@@ -369,6 +388,7 @@ const QRDetail = () => {
               video_description: qrData.video_description,
               video_button: qrData.video_button,
               video_url: qrData.video_url,
+              video_name: qrData.video_name,
             }
           : {}),
         ...(type === "events"

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { InputComponent } from "../InputComponent";
 import { AccordianComponent } from "../AccordianComponent";
 import CutsomColorPickerComp from "../CutsomColorPickerComp";
 import ImageUploadComponent from "../ImageUploadComp";
+import { useLocation } from "react-router-dom";
 
 const colors = [
   { id: "blue", background: "#d1e5fa", button: "#1466b8" },
@@ -11,6 +12,30 @@ const colors = [
   { id: "red", background: "#fecdd6", button: "#b00223" },
 ];
 const GALLERY = ({ qrData, setQrData }) => {
+  const location = useLocation();
+  console.log("editDataGallery", location);
+
+  useEffect(() => {
+    if (location.state?.qrData) {
+      const qrDataFromLocation = location.state.qrData.data;
+      console.log("qrDataFromLocation", qrDataFromLocation);
+      const { gallery_image, ...restQrData } = qrDataFromLocation;
+      setQrData((prevQrData) => ({
+        ...prevQrData,
+        ...restQrData,
+      }));
+      // setQrData(qrDataFromLocation);
+
+      // If there's color data in qrData, ensure it's set correctly
+      if (qrDataFromLocation?.color) {
+        setQrData((prevQrData) => ({
+          ...prevQrData,
+          color: qrDataFromLocation?.color,
+        }));
+      }
+    }
+  }, [location.state, setQrData]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setQrData((prevData) => ({
@@ -18,13 +43,13 @@ const GALLERY = ({ qrData, setQrData }) => {
       [name]: value,
     }));
   };
-  const handleImageUpload = (mediaData, name) => {
+  const handleImageUpload = (mediaData, name, file) => {
     console.log("Received media data", mediaData); // media data base64
     console.log("Received media name", name); // media name
 
     setQrData((prevData) => ({
       ...prevData,
-      [name]: mediaData,
+      [name]: file,
     }));
   };
 

@@ -23,6 +23,7 @@ function BottomWrapperStages({
 
   console.log("qrDataqrData", generateQrPayload);
 
+
   //QR CODE API CALL
   const { mutate: mutateQrCode, isPending: isLoading } = useMutation({
     mutationFn: apis.generateQrCode,
@@ -30,83 +31,38 @@ function BottomWrapperStages({
       toast.error(message);
     },
     onSuccess: ({ data: generateQr, status }) => {
-      // console.log("QR code generated successfully", generateQr);
-      toast.success("QR code Update successfully");
-      navigate("/qr-list");
+      toast.success("QR code generated successfully");
+      navigate("/my-qr-codes");
     },
   });
-
-  const appendBase64ToFormData = (formData, base64Data, fieldName) => {
-    if (base64Data) {
-      // Convert base64 to a Blob
-      const base64String = base64Data.split(",")[1];
-      const byteCharacters = atob(base64String);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-
-      // Determine MIME type from base64 string
-      const mimeType = base64Data.split(";")[0].split(":")[1];
-      const blob = new Blob([byteArray], { type: mimeType });
-
-      // Derive file extension from MIME type
-      let extension = "png";
-      if (mimeType.includes("jpeg")) {
-        extension = "jpg";
-      } else if (mimeType.includes("svg")) {
-        extension = "svg";
-      } else if (mimeType.includes("gif")) {
-        extension = "gif";
-      } else if (mimeType.includes("webp")) {
-        extension = "webp";
-      }
-
-      // Create a default file name if needed, or use the field name
-      const fileName = `${fieldName}.${extension}`;
-      formData.append(fieldName, blob, fileName);
-    }
-  };
 
   const handleNextClick = async () => {
     if (isLastStage) {
       const formData = new FormData();
 
       //EDIT IDDDDD
-      if (generateQrPayload?.id) {
-        formData.append("id", generateQrPayload.id);
+      if (generateQrPayload?.editID) {
+        formData.append("id", generateQrPayload.editID);
       }
 
-      if (generateQrPayload?.landing_logo instanceof File) {
+      if (generateQrPayload?.landing_logo) {
         formData.append("landing_logo", generateQrPayload?.landing_logo);
-
       }
 
-      if (generateQrPayload?.gallery_image instanceof File) {
+      if (generateQrPayload?.gallery_image) {
         formData.append("gallery_image", generateQrPayload?.gallery_image);
-
       }
-      if (generateQrPayload?.links_image instanceof File) {
+      if (generateQrPayload?.links_image) {
         formData.append("links_image", generateQrPayload?.links_image);
       }
-      // if (generateQrPayload?.vcard_image) {
-      //   appendBase64ToFormData(
-      //     formData,
-      //     generateQrPayload?.vcard_image,
-      //     "vcard_image"
-      //   );
-      // }
       if (generateQrPayload?.vcard_image instanceof File) {
         formData.append("vcard_image", generateQrPayload?.vcard_image);
       }
-      if (generateQrPayload?.business_image instanceof File) {
-        formData.append("business_image", generateQrPayload?.business_image);
-
+      if (generateQrPayload?.business_logo instanceof File) {
+        formData.append("business_logo", generateQrPayload?.business_logo);
       }
-      if (generateQrPayload?.event_image instanceof File) {
+      if (generateQrPayload?.event_image) {
         formData.append("event_image", generateQrPayload?.event_image);
-
       }
 
       // Handle opening_hours_days
@@ -229,15 +185,49 @@ function BottomWrapperStages({
               );
             }
           );
+        } else if (key === "app_social") {
+          // Handle the social object separately
+          Object.keys(generateQrPayload.app_social).forEach(
+            (video_socialKey) => {
+              formData.append(
+                `app_social[${video_socialKey}]`,
+                generateQrPayload.app_social[video_socialKey]
+              );
+            }
+          );
+        } else if (key === "video_social") {
+          // Handle the social object separately
+          Object.keys(generateQrPayload.video_social).forEach(
+            (video_socialKey) => {
+              formData.append(
+                `video_social[${video_socialKey}]`,
+                generateQrPayload.video_social[video_socialKey]
+              );
+            }
+          );
+        } else if (key === "landing_social") {
+          // Handle the social object separately
+          Object.keys(generateQrPayload.landing_social).forEach(
+            (landing_socialKey) => {
+              formData.append(
+                `landing_social[${landing_socialKey}]`,
+                generateQrPayload.landing_social[landing_socialKey]
+              );
+            }
+          );
         } else if (
           key !== "landing_logo" &&
           key !== "gallery_image" &&
           key !== "links_image" &&
           key !== "vcard_image" &&
+          key !== "business_logo" &&
           key !== "business_image" &&
           key !== "opening_hours_days" &&
           key !== "event_image" &&
-          key !== "pdf_file"
+          key !== "pdf_file" &&
+          key !== "app_social" &&
+          key !== "video_social" &&
+          key !== "landing_social"
         ) {
           // Skip 'landing_logo' since it's already handled as a blob
           formData.append(key, generateQrPayload[key]);
@@ -248,17 +238,13 @@ function BottomWrapperStages({
         formData.append("pdf_file", generateQrPayload.pdf_file);
       }
 
-      // if (generateQrPayload?.pdf_file) {
-      //   if (generateQrPayload.pdf_file instanceof File) {
-      //     formData.append("pdf_file", generateQrPayload.pdf_file);
-      //   }
-      // } else if (typeof generateQrPayload.pdf_file === 'string') {
-      //   formData.append("pdf_file_url", generateQrPayload.pdf_file);
-      // }
-
-      // if (generateQrPayload?.pdf_file instanceof File) {
-      //   formData.append("pdf_file", generateQrPayload.pdf_file);
-      // }
+      // Handle all_links from generateQrPayload
+      if (generateQrPayload?.all_links) {
+        generateQrPayload.all_links.forEach((link, index) => {
+          formData.append(`all_links[${index}][text]`, link.text);
+          formData.append(`all_links[${index}][url]`, link.url);
+        });
+      }
 
       console.log("formData", formData);
       for (let [key, value] of formData.entries()) {
@@ -266,25 +252,11 @@ function BottomWrapperStages({
       }
 
       mutateQrCode(formData);
-
-      // mutateQrCode(generateQrPayload);
     } else {
       onNextClick();
     }
   };
 
-  // const handleNextClick = () => {
-  //   if (isLastStage) {
-  //     setIsLoading(true);
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //       navigate("/pricing");
-  //     }, 4000);
-  //   } else {
-  //     // Go to the next stage
-  //     onNextClick();
-  //   }
-  // };
   return (
     <div className="bottom-wrapper-stages">
       <button className="cancel" onClick={onCancelClick}>
@@ -310,21 +282,7 @@ function BottomWrapperStages({
           </div>
         ))}
       </div>
-      {/* {showNextButton && (
-        <div className="btn-next">
-          <button
-            className="next"
-            onClick={handleNextClick}
-            disabled={isLoading}
-          >
-            {isLastStage ? "Finish" : "Next"}
-            {isLoading ? "Loading..." : isLastStage ? "Finish" : "Next"}
-          </button>
-          <MdChevronRight />
-        </div>
-      )} */}
 
-      {/*  */}
       {showNextButton && (
         <div className="btn-next">
           <button

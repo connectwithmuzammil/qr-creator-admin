@@ -36,6 +36,7 @@ const UserSubscription = () => {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Subscription ID</th>
+                <th>Subscription Date</th>
                 <th>Subscription Expiration Date</th>
                 <th>Subscription Plan</th>
               </tr>
@@ -53,7 +54,8 @@ const UserSubscription = () => {
                     <td>
                       {user?.userSubscriptionId ? user.userSubscriptionId : "-"}
                     </td>
-                    <td>{user?.subscription_expiry}</td>
+                    <td>{user?.subscription_date ? user?.subscription_date : "-"}</td>
+                    <td>{user?.subscription_expiry ? user?.subscription_expiry : "-"}</td>
                     <td>{user?.subscription_plan}</td>
                   </tr>
                 ))
