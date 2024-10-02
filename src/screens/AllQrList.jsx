@@ -304,8 +304,8 @@ const AllQrList = () => {
               if (qrList?.qrcodes?.length > 0) {
                 // Sort qrcodes by qr_name in alphabetical order (case-insensitive)
                 const sortedQRCodes = qrList?.qrcodes?.sort((a, b) => {
-                  const nameA = a.qr_name.toUpperCase(); // Ignore case
-                  const nameB = b.qr_name.toUpperCase(); // Ignore case
+                  const nameA = a?.qr_name?.toUpperCase(); // Ignore case
+                  const nameB = b?.qr_name?.toUpperCase(); // Ignore case
                   if (nameA < nameB) {
                     return -1;
                   }
