@@ -29,12 +29,24 @@ export const InputComponent = ({
     </div>
   );
 };
-export const InputCheckboxComponent = ({ label, ...props }) => {
+
+export const InputCheckboxComponent = ({
+  label,
+  onChange,
+  checked,
+  ...props
+}) => {
   return (
-    <div className="input-checkbox-comp">
-      <input type="checkbox" {...props} />
-      <label htmlFor="">{label}</label>
-    </div>
+    // <div className="input-checkbox-comp">
+    //   <input type="checkbox" onChange={onChange} {...props} />
+    //   <label htmlFor="">{label}</label>
+    // </div>
+
+    <label className="checkbox-label">
+      <input type="checkbox" checked={checked} onChange={onChange} {...props} />
+      <span className="checkbox-custom"></span>
+      {label}
+    </label>
   );
 };
 

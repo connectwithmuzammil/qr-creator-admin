@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sidebar } from "../components";
 import { useQuery } from "@tanstack/react-query";
 import apis from "../services";
@@ -24,6 +24,7 @@ const AllQrList = () => {
   // console.log("singleUserQRCode",location);
   const singleUserQRCode = location?.state?.userQrData;
   console.log("singleUserQRCode", singleUserQRCode);
+  const [loadingMap, setLoadingMap] = useState({});
 
   const navigate = useNavigate();
   const {
@@ -41,7 +42,7 @@ const AllQrList = () => {
   console.log("getQrList", getQrList);
 
   const handleViewDetail = async (singleViewDetail) => {
-    console.log("singleViewDetail", singleViewDetail);
+    // console.log("singleViewDetail", singleViewDetail);
     let userQrStats = await apis.getEachUserQRStat(singleViewDetail?.id);
     let statsData = userQrStats?.data;
     let userQrSystem = await apis.getEachUserQRSystem(singleViewDetail?.id);
@@ -62,217 +63,40 @@ const AllQrList = () => {
     });
   };
 
+  const frameComponents = {
+    notSelectedFrame: NotSelectedFrameCanvas,
+    frame1: CanvaFrame1,
+    frame2: CanvaFrame2,
+    frame3: CanvaFrame3,
+    frame4: CanvaFrame4,
+    frame5: CanvaFrame5,
+    frame6: CanvaFrame6,
+    frame7: CanvaFrame7,
+    frame8: CanvaFrame8,
+    frame9: CanvaFrame9,
+    frame10: CanvaFrame10,
+    frame11: CanvaFrame11,
+  };
+
   const renderFrame = (selectedFrame, qrCodeData, data) => {
-    // console.log(
-    //   "selectedFrame,qrCodeData,data",
-    //   selectedFrame,
-    //   qrCodeData,
-    //   data
-    // );
-    switch (selectedFrame) {
-      case "notSelctedFrame":
-        return (
-          <NotSelectedFrameCanvas
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame1":
-        return (
-          <CanvaFrame1
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame2":
-        return (
-          <CanvaFrame2
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame3":
-        return (
-          <CanvaFrame3
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame4":
-        return (
-          <CanvaFrame4
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame5":
-        return (
-          <CanvaFrame5
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame6":
-        return (
-          <CanvaFrame6
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame7":
-        return (
-          <CanvaFrame7
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame8":
-        return (
-          <CanvaFrame8
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame9":
-        return (
-          <CanvaFrame9
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame10":
-        return (
-          <CanvaFrame10
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      case "frame11":
-        return (
-          <CanvaFrame11
-            frameColor={qrCodeData?.frameColor}
-            frameBorderColor={qrCodeData?.frameBgColor}
-            frameText={qrCodeData?.frameText}
-            frameTextColor={qrCodeData?.frameTextColor}
-            CornerbgColor={qrCodeData?.CornerbgColor}
-            dotColor={qrCodeData?.dotColor}
-            cornerBorderColor={qrCodeData?.cornerBorderColor}
-            cornerDotColor={qrCodeData?.cornerDotColor}
-            selectedCornerStyle={qrCodeData?.selectedCornerStyle}
-            selectedDotStyle={qrCodeData?.selectedDotStyle}
-            data={data?.image_path}
-          />
-        );
-      // ... Add cases for other frames
-      default:
-        return null;
-    }
+    const FrameComponent = frameComponents[selectedFrame];
+    return FrameComponent ? (
+      <FrameComponent {...qrCodeData} data={data?.image_path} />
+    ) : null;
   };
 
   const handleEdit = async (id, type) => {
-    console.log("EDIT IDDD,type", id, type);
+    // console.log("EDIT IDDD", id);
+    setLoadingMap((prev) => ({ ...prev, [id]: true }));
     try {
       let res = await apis.getSingleQr(id);
       let qrData = res.data;
-      console.log("qrDataEdit", qrData);
+      // console.log("qrDataEdit", qrData);
       navigate(`/qr-editor/${type}`, { state: { qrData } });
     } catch (error) {
       console.log("error", error);
+    } finally {
+      setLoadingMap((prev) => ({ ...prev, [id]: false }));
     }
   };
 
@@ -314,12 +138,14 @@ const AllQrList = () => {
                   }
                   return 0;
                 });
-
+               
+                console.log("isLoading",isLoading);
                 return (
                   <div className="result-cardd" key={qrList?.id}>
                     {console.log("qrList", qrList)}
                     {sortedQRCodes.map((qrCode, index) => {
                       const selectedFrame = qrCode?.style?.frameName;
+                      const isLoading = loadingMap[qrCode?.id];
                       return (
                         <div className="result-cardd-wrapper" key={index}>
                           {console.log("QRCOD,mnmE", qrCode)}
@@ -394,10 +220,16 @@ const AllQrList = () => {
                                 handleEdit(qrCode?.id, qrCode.type)
                               }
                             >
-                              Edit
-                              <span>
-                                <MdEdit size={14} />
-                              </span>
+                              {isLoading ? (
+                                "Loading..."
+                              ) : (
+                                <>
+                                  Edit
+                                  <span>
+                                    <MdEdit size={14} />
+                                  </span>
+                                </>
+                              )}
                             </p>
                           </div>
                         </div>

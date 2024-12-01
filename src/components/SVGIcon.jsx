@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef ,useState} from "react";
 import QRCodeStyling from "qr-code-styling";
 
 //DEFAULT QR CODE OPTIONS
@@ -1805,68 +1805,109 @@ export const NotSelectedFrameCanvas = ({
   CornerbgColor,
   cornerDotColor,
   data,
+  qrLogo,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
-  console.log("data null case",data)
-
-  const qrCodeOptions = {
-    width: 215,
-    height: 215,
-    data: data ?  data: "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor,
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-    qrCode.current.append(document.getElementById(qrCodeId.current));
-  }, []);
+  // console.log("data null case", data);
+  const [imageLogo, setImageLogo] = useState(null);
 
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  useEffect(() => {
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]);
+  // useEffect(() => {
+  //   qrCode.current = new QRCodeStyling(qrCodeOptions);
+  //   qrCode.current.append(document.getElementById(qrCodeId.current));
+  // }, []);
+
+  // useEffect(() => {
+  //   qrCode.current.update({
+  //     dotsOptions: {
+  //       color: dotColor,
+  //       type: selectedDotStyle,
+  //     },
+  //     cornersSquareOptions: {
+  //       color: cornerBorderColor,
+  //       type: selectedCornerStyle,
+  //     },
+  //     backgroundOptions: {
+  //       color: CornerbgColor,
+  //     },
+  //     cornersDotOptions: {
+  //       color: cornerDotColor,
+  //     },
+  //   });
+  // }, [
+  //   selectedDotStyle,
+  //   cornerBorderColor,
+  //   dotColor,
+  //   selectedCornerStyle,
+  //   CornerbgColor,
+  //   cornerDotColor,
+  //   // qrLogo,
+  // ]);
 
   return (
-    <div className="notselectSvg">
-      <div  id={qrCodeId.current}  style={{ width: "100%", height: "100%" }} />
+    <div className="notselectSvg" {...props}>
+      <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 };
+
 export const CanvaFrame1 = ({
   frameColor,
   frameBorderColor,
@@ -1878,62 +1919,81 @@ export const CanvaFrame1 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
-  console.log("daaata QR CODE",data)
 
-  const qrCodeOptions = {
-    width: 200,
-    height: 200,
-    data: data ?  data: "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-    qrCode.current.append(document.getElementById(qrCodeId.current));
-  }, []);
+  // console.log("qrLogooo",qrLogo)
+
+  const [imageLogo, setImageLogo] = useState(null);
 
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo) {
+      const logoUrl = qrLogo instanceof File ? URL.createObjectURL(qrLogo) : qrLogo;
+      setImageLogo(logoUrl);
+    }
+  }, [qrLogo]);
+
+  console.log("imageLogoSvg",imageLogo);
+  let testLogo = "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+  // "https://qrgenarator.envobyte.dev/qrDesignLogo/design_6_Zhw7Y6mpJ7.svg"
+
+
+  // "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions, imageLogo]); // Ensure QR code updates on option change
 
   return (
     <svg
@@ -1948,7 +2008,7 @@ export const CanvaFrame1 = ({
         fillRule="evenodd"
         clipRule="evenodd"
         d="M0 6C0 2.68629 2.68629 0 6 0H66C69.3137 0 72 2.68629 72 6V90C72 93.3137 69.3137 96 66 96H6C2.68629 96 0 93.3137 0 90V6ZM36.0001 93.6C38.9824 93.6 41.4001 91.1823 41.4001 88.2C41.4001 85.2177 38.9824 82.8 36.0001 82.8C33.0177 82.8 30.6001 85.2177 30.6001 88.2C30.6001 91.1823 33.0177 93.6 36.0001 93.6ZM35.9997 92.1C38.1536 92.1 39.8997 90.3539 39.8997 88.2C39.8997 86.0461 38.1536 84.3 35.9997 84.3C33.8458 84.3 32.0997 86.0461 32.0997 88.2C32.0997 90.3539 33.8458 92.1 35.9997 92.1ZM67.1998 18H4.7998V80.4H67.1998V18Z"
-        fill={frameColor ? frameColor : "#404040"}
+        fill={frameColor || "#404040"}
       />
       <foreignObject width="100%" height="18px">
         <svg
@@ -1958,12 +2018,11 @@ export const CanvaFrame1 = ({
             height: "100%",
             maxWidth: "100%",
           }}
-          {...props}
         >
           <text
             x="50%"
             y={10}
-            fill={frameTextColor ? frameTextColor : "#FFFFFF"}
+            fill={frameTextColor || "#FFFFFF"}
             dominantBaseline="middle"
             textAnchor="middle"
             fontFamily="Nunito Sans"
@@ -1972,7 +2031,7 @@ export const CanvaFrame1 = ({
               fontSize: 9,
             }}
           >
-            {frameText ? frameText : "SCAN ME!"}
+            {frameText || "SCAN ME!"}
           </text>
         </svg>
       </foreignObject>
@@ -1990,12 +2049,16 @@ export const CanvaFrame1 = ({
             alignItems: "center",
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          />
         </div>
       </foreignObject>
     </svg>
   );
 };
+
 export const CanvaFrame2 = ({
   frameColor,
   frameBorderColor,
@@ -2007,61 +2070,122 @@ export const CanvaFrame2 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
-  
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ?  data: "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-    qrCode.current.append(document.getElementById(qrCodeId.current));
-    }, []);
 
+  const [imageLogo, setImageLogo] = useState(null);
+
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo) {
+      const logoUrl = qrLogo instanceof File ? URL.createObjectURL(qrLogo) : qrLogo;
+      setImageLogo(logoUrl);
+    }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
+
+  // const qrCodeOptions = {
+  //   width: 300,
+  //   height: 300,
+  //   data: data ? data : "www.example.com",
+  //   dotsOptions: {
+  //     color: dotColor,
+  //     type: selectedDotStyle,
+  //   },
+  //   cornersSquareOptions: {
+  //     color: cornerBorderColor,
+  //     type: selectedCornerStyle, // This will dynamically change
+  //   },
+  //   cornersDotOptions: {
+  //     color: cornerDotColor, // Customize if needed
+  //   },
+  //   backgroundOptions: {
+  //     color: CornerbgColor, // Background color of the QR code
+  //   },
+  // };
+  // useEffect(() => {
+  //   qrCode.current = new QRCodeStyling(qrCodeOptions);
+  //   qrCode.current.append(document.getElementById(qrCodeId.current));
+  // }, []);
+
+  // useEffect(() => {
+  //   qrCode.current.update({
+  //     dotsOptions: {
+  //       color: dotColor,
+  //       type: selectedDotStyle, // Update dot style on change
+  //     },
+  //     cornersSquareOptions: {
+  //       color: cornerBorderColor,
+  //       type: selectedCornerStyle, // Update corner style on change
+  //     },
+  //     backgroundOptions: {
+  //       color: CornerbgColor, // Background color of the QR code
+  //     },
+  //     cornersDotOptions: {
+  //       color: cornerDotColor, // Customize if needed
+  //     },
+  //   });
+  // }, [
+  //   selectedDotStyle,
+  //   cornerBorderColor,
+  //   dotColor,
+  //   selectedCornerStyle,
+  //   CornerbgColor,
+  //   cornerDotColor,
+  // ]);
 
   return (
     <svg
@@ -2091,7 +2215,10 @@ export const CanvaFrame2 = ({
             backgroundColor: "white",
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
       <foreignObject width="100%" height="18px" y={72}>
@@ -2134,61 +2261,75 @@ export const CanvaFrame3 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
 
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ?  data: "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-    qrCode.current.append(document.getElementById(qrCodeId.current));
-    }, []);
+  const [imageLogo, setImageLogo] = useState(null);
 
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
 
   return (
     <svg
@@ -2220,7 +2361,10 @@ export const CanvaFrame3 = ({
             backgroundColor: "white",
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
       <foreignObject width="100%" height="18px" y={72}>
@@ -2263,61 +2407,76 @@ export const CanvaFrame4 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
 
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ?  data: "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-   qrCode.current.append(document.getElementById(qrCodeId.current));
-  }, []);
+  const [imageLogo, setImageLogo] = useState(null);
 
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
+
   return (
     <svg
       width={72}
@@ -2346,7 +2505,10 @@ export const CanvaFrame4 = ({
             backgroundColor: "white",
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
       <foreignObject width="100%" height="18px" y={72}>
@@ -2389,61 +2551,75 @@ export const CanvaFrame5 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
 
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ?  data: "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-   qrCode.current.append(document.getElementById(qrCodeId.current));
-  }, []);
+  const [imageLogo, setImageLogo] = useState(null);
 
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
 
   return (
     <svg
@@ -2499,7 +2675,10 @@ export const CanvaFrame5 = ({
             backgroundColor: "white",
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
     </svg>
@@ -2516,61 +2695,76 @@ export const CanvaFrame6 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
 
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ? data : "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-    qrCode.current.append(document.getElementById(qrCodeId.current));
-  }, []);
+  const [imageLogo, setImageLogo] = useState(null);
 
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
+
   return (
     <svg
       width={72}
@@ -2599,7 +2793,10 @@ export const CanvaFrame6 = ({
           }}
           bis_skin_checked={1}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
       <foreignObject width="100%" height="18px" y={72}>
@@ -2642,61 +2839,75 @@ export const CanvaFrame7 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
 
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ? data : "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-    qrCode.current.append(document.getElementById(qrCodeId.current));
-    }, []);
+  const [imageLogo, setImageLogo] = useState(null);
 
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
+
   return (
     <svg
       width={83}
@@ -2743,7 +2954,10 @@ export const CanvaFrame7 = ({
             backgroundColor: "white",
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
       <foreignObject width="100%" height="18px" y={72}>
@@ -2786,61 +3000,76 @@ export const CanvaFrame8 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
 
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ? data : "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-    qrCode.current.append(document.getElementById(qrCodeId.current));
-    }, []);
+  const [imageLogo, setImageLogo] = useState(null);
 
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
+
   return (
     <svg
       width={84}
@@ -2874,7 +3103,10 @@ export const CanvaFrame8 = ({
             paddingTop: 1,
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
       <foreignObject width="100%" height="18px" y={90} style={{}}>
@@ -2917,61 +3149,76 @@ export const CanvaFrame9 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
 
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ? data : "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-    qrCode.current.append(document.getElementById(qrCodeId.current));
-  }, []);
+  const [imageLogo, setImageLogo] = useState(null);
 
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
+
   return (
     <svg
       width={80}
@@ -2990,7 +3237,7 @@ export const CanvaFrame9 = ({
       <rect x={8} y={20} width={64} height={64} fill="url(#pattern0)" />
       <path
         d="M21 10.25C21 7.62665 23.1266 5.5 25.75 5.5H54.25C56.8734 5.5 59 7.62665 59 10.25C59 12.8734 56.8734 15 54.25 15H25.75C23.1266 15 21 12.8734 21 10.25Z"
-        fill={ "#404040"}
+        fill={"#404040"}
       />
       <path
         fillRule="evenodd"
@@ -3011,7 +3258,10 @@ export const CanvaFrame9 = ({
             padding: "1px 1px 1px 0px",
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
       <foreignObject width="100%" height="18px" y={90}>
@@ -3054,61 +3304,76 @@ export const CanvaFrame10 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
 
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ? data : "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-    qrCode.current.append(document.getElementById(qrCodeId.current));
-  }, []);
+  const [imageLogo, setImageLogo] = useState(null);
 
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, 
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, 
+        type: selectedCornerStyle,
+      },
+      cornersDotOptions: {
+        color: cornerDotColor,
       },
       backgroundOptions: {
         color: CornerbgColor,
       },
-      cornersDotOptions: {
-        color: cornerDotColor, 
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
+
   return (
     <svg
       width={75}
@@ -3154,7 +3419,10 @@ export const CanvaFrame10 = ({
             backgroundColor: "white",
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
       <foreignObject width="100%" height="18px" y={80}>
@@ -3197,61 +3465,75 @@ export const CanvaFrame11 = ({
   selectedCornerStyle,
   CornerbgColor,
   cornerDotColor,
+  qrLogo,
   data,
   ...props
 }) => {
   const qrCode = useRef(null);
   const qrCodeId = useRef(`qrCode-${Math.random().toString(36).substr(2, 9)}`);
 
-  const qrCodeOptions = {
-    width: 300,
-    height: 300,
-    data: data ? data : "www.example.com",
-    dotsOptions: {
-      color: dotColor,
-      type: selectedDotStyle,
-    },
-    cornersSquareOptions: {
-      color: cornerBorderColor,
-      type: selectedCornerStyle, // This will dynamically change
-    },
-    cornersDotOptions: {
-      color: cornerDotColor, // Customize if needed
-    },
-    backgroundOptions: {
-      color: CornerbgColor, // Background color of the QR code
-    },
-  };
-  useEffect(() => {
-    qrCode.current = new QRCodeStyling(qrCodeOptions);
-   qrCode.current.append(document.getElementById(qrCodeId.current));
-  }, []);
+  const [imageLogo, setImageLogo] = useState(null);
 
+  // console.log("imageLogoSvg",imageLogo)
   useEffect(() => {
-    qrCode.current.update({
+    if (qrLogo instanceof File) {
+      const logoUrl = URL.createObjectURL(qrLogo);
+      setImageLogo(logoUrl);
+    }
+    // else if (typeof qrLogo === 'string') {
+    //   setImageLogo(qrLogo);
+    // }
+  }, [qrLogo]);
+
+  // Memoize qrCodeOptions to avoid re-creation on every render
+  const qrCodeOptions = useMemo(
+    () => ({
+      width: 200,
+      height: 200,
+      data: data || "www.example.com",
+      image: imageLogo,
       dotsOptions: {
         color: dotColor,
-        type: selectedDotStyle, // Update dot style on change
+        type: selectedDotStyle,
       },
       cornersSquareOptions: {
         color: cornerBorderColor,
-        type: selectedCornerStyle, // Update corner style on change
-      },
-      backgroundOptions: {
-        color: CornerbgColor, // Background color of the QR code
+        type: selectedCornerStyle,
       },
       cornersDotOptions: {
-        color: cornerDotColor, // Customize if needed
+        color: cornerDotColor,
       },
-    });
-  }, [
-    selectedDotStyle,
-    cornerBorderColor,
-    dotColor,
-    selectedCornerStyle,
-    CornerbgColor,
-    cornerDotColor,
-  ]);
+      backgroundOptions: {
+        color: CornerbgColor,
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 0,
+      },
+    }),
+    [
+      data,
+      imageLogo,
+      dotColor,
+      selectedDotStyle,
+      cornerBorderColor,
+      selectedCornerStyle,
+      cornerDotColor,
+      CornerbgColor,
+    ]
+  );
+
+  // Initialize QR code on mount and update when qrCodeOptions change
+  useEffect(() => {
+    // console.log('qrCodeOptions updated:', qrCodeOptions);
+
+    if (qrCode.current) {
+      qrCode.current.update(qrCodeOptions); // Update QR code with new options
+    } else {
+      qrCode.current = new QRCodeStyling(qrCodeOptions);
+      qrCode.current.append(document.getElementById(qrCodeId.current));
+    }
+  }, [qrCodeOptions]); // Ensure QR code updates on option change
 
   return (
     <svg
@@ -3281,7 +3563,10 @@ export const CanvaFrame11 = ({
             paddingTop: 2,
           }}
         >
-          <div id={qrCodeId.current} style={{ width: "100%", height: "100%" }}></div>
+          <div
+            id={qrCodeId.current}
+            style={{ width: "100%", height: "100%" }}
+          ></div>
         </div>
       </foreignObject>
       <foreignObject width="100%" height="18px" x={-3} y={80}>

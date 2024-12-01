@@ -1,58 +1,67 @@
 import React, { useState, useEffect } from "react";
 
-const SocialIconsComp = ({ title = "Social networks", onIconClick, icons={}, className, initialLinks = {} }) => {
-
-  console.log("initialLinks",initialLinks)
+const SocialIconsComp = ({
+  icons = {},
+  className,
+  localQrData,
+  setLocalQrData,
+  dataKey,
+}) => {
   const [activeIcons, setActiveIcons] = useState([]);
-  const [iconLinks, setIconLinks] = useState({});
 
-  // Sync iconLinks and activeIcons with initialLinks when initialLinks change
+  // Sync activeIcons with the dynamic key in localQrData
   useEffect(() => {
-    setIconLinks(initialLinks); // Update the iconLinks when initialLinks changes
-    setActiveIcons(Object.keys(initialLinks)); // Activate the icons based on the initial links
-  }, [initialLinks]);
+    setActiveIcons(Object.keys(localQrData?.[dataKey] || []));
+  }, [localQrData, dataKey]);
 
   const handleIconClick = (iconName) => {
     if (activeIcons.includes(iconName)) {
-      setActiveIcons(activeIcons.filter((icon) => icon !== iconName));
-      setIconLinks((prevLinks) => {
-        const newLinks = { ...prevLinks };
-        delete newLinks[iconName];
-        return newLinks;
-      });
+      handleRemoveIcon(iconName);
     } else {
-      setActiveIcons([...activeIcons, iconName]);
+      setActiveIcons((prev) => [...prev, iconName]);
+      setLocalQrData((prevData) => ({
+        ...prevData,
+        [dataKey]: {
+          ...prevData[dataKey],
+          [iconName]: "",
+        },
+      }));
     }
-    if (onIconClick) onIconClick(iconName, iconLinks[iconName] || "");
   };
 
   const handleLinkChange = (iconName, link) => {
-    setIconLinks((prevLinks) => ({
-      ...prevLinks,
-      [iconName]: link,
+    setLocalQrData((prevData) => ({
+      ...prevData,
+      [dataKey]: {
+        ...prevData[dataKey],
+        [iconName]: link,
+      },
     }));
-    if (onIconClick) onIconClick(iconName, link);
   };
 
   const handleRemoveIcon = (iconName) => {
-    setActiveIcons(activeIcons.filter((icon) => icon !== iconName));
-    setIconLinks((prevLinks) => {
-      const newLinks = { ...prevLinks };
-      delete newLinks[iconName];
-      return newLinks;
+    setActiveIcons((prev) => prev.filter((icon) => icon !== iconName));
+    setLocalQrData((prevData) => {
+      const updatedDataKey = { ...prevData[dataKey] };
+      delete updatedDataKey[iconName];
+      return {
+        ...prevData,
+        [dataKey]: updatedDataKey,
+      };
     });
   };
 
   return (
     <>
+      {/* Render active icons with input fields */}
       {activeIcons.map((iconName) => (
-        <div className="input-box-wrapper-social" key={iconName}>
+        <div className={`input-box-wrapper-social ${className}`} key={iconName}>
           <div className="wrap">
             <div className="icon-selected">{icons[iconName]}</div>
             <input
               type="text"
               placeholder={`Enter your ${iconName} link`}
-              value={iconLinks[iconName] || ""}
+              value={localQrData[dataKey]?.[iconName] || ""}
               onChange={(e) => handleLinkChange(iconName, e.target.value)}
             />
           </div>
@@ -60,21 +69,20 @@ const SocialIconsComp = ({ title = "Social networks", onIconClick, icons={}, cla
             className="remove-icon"
             onClick={() => handleRemoveIcon(iconName)}
           >
-            -
+            - {/* Button to remove icon */}
           </button>
         </div>
       ))}
-      <div className="social-con-comp">
-        <ul className={`wrapper ${className}`}>
+      <div className={`social-con-comp ${className}`}>
+        <ul className="wrapper">
           {Object.keys(icons).map((icon) => (
             <li
               key={icon}
-              className={`icon ${icon} ${activeIcons.includes(icon) ? "active" : ""}`}
               onClick={() => handleIconClick(icon)}
+              className={`icon ${icon} ${
+                activeIcons.includes(icon) ? "active" : ""
+              }`}
             >
-              <span className="tooltip">
-                {icon.charAt(0).toUpperCase() + icon.slice(1)}
-              </span>
               {icons[icon]}
             </li>
           ))}

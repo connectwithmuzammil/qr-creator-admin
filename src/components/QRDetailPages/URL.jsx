@@ -3,25 +3,27 @@ import { AccordianComponent, AccordianWithInput } from "../AccordianComponent";
 import { InputComponent } from "../InputComponent";
 import { useLocation } from "react-router-dom";
 
-const URL = ({ qrData, setQrData }) => {
+const URL = ({ localQrData, setLocalQrData, errors, setErrors }) => {
   const location = useLocation();
-  console.log("LOCATIONURL",location);
 
   useEffect(() => {
     if (location.state?.qrData) {
-      setQrData(location.state.qrData.data);
+      setLocalQrData(location?.state?.qrData?.data);
     }
-  }, [location.state, setQrData]);
+  }, [location.state, setLocalQrData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setQrData((prevData) => ({
+    setLocalQrData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  };
 
-  console.log("QRDATAUPDATED", qrData);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  };
   return (
     <>
       <div className="url">
@@ -32,7 +34,7 @@ const URL = ({ qrData, setQrData }) => {
                 placeholder="e.g My QR code"
                 onChange={handleInputChange}
                 name="qr_name"
-                value={qrData.qr_name}
+                value={localQrData?.qr_name}
               />
             </AccordianComponent>
             <AccordianComponent
@@ -42,11 +44,13 @@ const URL = ({ qrData, setQrData }) => {
                 placeholder={"https://surfershops.com/sale"}
                 type={"url"}
                 onChange={handleInputChange}
-                value={qrData.field_url}
+                value={localQrData?.field_url}
                 name={"field_url"}
+                error={errors.field_url}
               />
             </AccordianComponent>
           </div>
+
           <div className="right">
             <img src="/assets/images/phone-url.png" alt="" />
           </div>
@@ -57,4 +61,3 @@ const URL = ({ qrData, setQrData }) => {
 };
 
 export default URL;
-

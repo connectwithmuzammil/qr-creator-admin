@@ -1887,6 +1887,7 @@ footer .bottom p {
 .qr-design .containerr {
   display: flex;
   justify-content: space-between;
+  align-items: start;
   gap: 30px;
 }
 .qr-design .containerr .left {
@@ -1897,6 +1898,7 @@ footer .bottom p {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 40px;
 }
 .qr-design .bottom {
 }
@@ -1929,6 +1931,7 @@ footer .bottom p {
   cursor: pointer;
   border: 1px solid #bfbfbf;
   height: 108px;
+  width: 100%;
 }
 .qr-design .bottom .one .card-con .cardd.active {
   border: 2px solid #e0201c;
@@ -1979,20 +1982,11 @@ footer .bottom p {
   /* top: 50%; */
   /* left: 50%;
   transform: translate(-50%, -50%); */
-  margin: 40px 0px;
+  /* margin: 40px 0px; */
   width: 100%;
-  height: 200px;
-}
-.qr-preview .notselectSvg {
-  /* position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
-  margin: 40px 0px;
-  text-align: center;
-  /* width: 100%; */
   height: 300px;
 }
+
 .qr-preview svg canvas {
   width: 100%;
   height: 100%;
@@ -2002,6 +1996,17 @@ footer .bottom p {
   width: 80%;
   object-fit: contain;
   position: relative;
+}
+.qr-preview .notselectSvg {
+  height: 300px;
+  margin: 40px 0;
+  text-align: center;
+}
+.qr-preview.design .notselectSvg, .qr-preview.design svg {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 .qr-design .containerr .right .img-con .canvas-img {
   position: absolute;
@@ -4034,4 +4039,230 @@ p.social-con-content {
   justify-content: center;
   align-items: center;
   height: 200px;
+}
+
+
+
+/* CSS FOR ELABELS BUTTON PRODUCT SELECTION */
+.product-selection-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.product-selection-buttons button {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.product-selection-buttons button.selected {
+  background-color: #e0201c;
+  color: white;
+  border-color: #e0201c;
+  box-shadow: 0 4px 8px rgba(224, 32, 28, 0.3);
+}
+
+.product-selection-buttons button:hover {
+  background-color: #f8d7da;
+  color: #e0201c;
+  box-shadow: 0 4px 8px rgba(224, 32, 28, 0.15);
+  border-color: #e0201c;
+}
+/* CSS for disabled buttons */
+.product-selection-buttons button:disabled {
+  background-color: #f5f5f5; 
+  border-color: #ccc;
+  color: #888; 
+  cursor: not-allowed; 
+  opacity: 0.6; 
+}
+
+.product-selection-buttons button:disabled:hover {
+  background-color: #f5f5f5; 
+  color: #888; 
+  box-shadow: none; 
+}
+
+/* ADD REVIEW CSS START */
+/* General Styles */
+.form-builder-container {
+  font-family: "Nunito Sans", sans-serif;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.title,
+.preview-title {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: #e0201c;
+  outline: none;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Add Question Button */
+.add-question-btn {
+  background-color: #e0201c;
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-question-btn:hover {
+  background-color: #c01817;
+}
+
+/* Question Card Styles */
+.question-card {
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.question-card .input-field {
+  margin-top: 10px;
+}
+
+/* Select and Option Styles */
+select.input-field {
+  cursor: pointer;
+}
+
+.add-option-btn {
+  background-color: #e0201c;
+  color: white;
+  font-size: 14px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-option-btn:hover {
+  background-color: #c01817;
+}
+
+input[type="text"].input-field {
+  margin-bottom: 10px;
+}
+
+.radio-label,
+.checkbox-input {
+  margin-bottom: 8px;
+  display: block;
+}
+
+.checkbox-input {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+/* Delete Question Button */
+.delete-question-btn {
+  color: #e0201c;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.delete-question-btn:hover {
+  color: #c01817;
+}
+
+
+/* CUSTOM CHECKBOX STYLE */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  font-size: 16px;
+  padding-left: 35px;
+  padding-right: 10px;
+  user-select: none;
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.checkbox-label input {
+  position: absolute;
+  left: -9999px;
+}
+
+.checkbox-label input:checked + .checkbox-custom {
+  background-color: #e0201c;
+  border-color: #e0201c;
+}
+
+.checkbox-custom {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 25px;
+  height: 25px;
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.checkbox-custom::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 10px;
+  height: 15px;
+  border: solid #fff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.checkbox-label input:checked + .checkbox-custom::after {
+  opacity: 1;
 }

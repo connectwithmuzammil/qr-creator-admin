@@ -10,6 +10,7 @@ import URL from "./QRDetailPages/URL";
 import QRDesign from "./QRDesign";
 import ColorPickerComponent from "./ColorPicker";
 import BottomWrapperStages from "./QrBottomStages";
+// import Header from "./Header";
 
 import PDF from "./QRDetailPages/PDF";
 import WIFI from "./QRDetailPages/WIFI";
@@ -23,6 +24,7 @@ import Social from "./QRDetailPages/Social";
 import BUSINESS from "./QRDetailPages/BUSINESS";
 import EVENT from "./QRDetailPages/EVENT";
 import Video from "./QRDetailPages/Video";
+import ELabels from "./QRDetailPages/E-Label";
 
 export {
   ScrollToTop,
@@ -49,4 +51,5 @@ export {
   QRDesign,
   ColorPickerComponent,
   BottomWrapperStages,
+  ELabels,
 };

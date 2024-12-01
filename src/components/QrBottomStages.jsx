@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import apis from "../services";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { resetQrData } from "../redux/slice/qrSlice";
 
 function BottomWrapperStages({
   currentStage,
@@ -20,9 +22,11 @@ function BottomWrapperStages({
 
   const isLastStage = currentStage === stages.length;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  console.log("qrDataqrData", generateQrPayload);
+  // console.log("qrDataqrData", generateQrPayload);
 
+  // console.log("generateQrPayload?.business_logo",typeof(generateQrPayload?.business_logo))
 
   //QR CODE API CALL
   const { mutate: mutateQrCode, isPending: isLoading } = useMutation({
@@ -31,8 +35,9 @@ function BottomWrapperStages({
       toast.error(message);
     },
     onSuccess: ({ data: generateQr, status }) => {
+      dispatch(resetQrData());
+      navigate("/qr-list");
       toast.success("QR code generated successfully");
-      navigate("/my-qr-codes");
     },
   });
 
@@ -49,11 +54,31 @@ function BottomWrapperStages({
         formData.append("landing_logo", generateQrPayload?.landing_logo);
       }
 
-      if (generateQrPayload?.gallery_image) {
-        formData.append("gallery_image", generateQrPayload?.gallery_image);
+      // if (generateQrPayload?.gallery_image) {
+      //   formData.append("gallery_image", generateQrPayload?.gallery_image);
+      // }
+      // if (generateQrPayload?.gallery_image && Array.isArray(generateQrPayload.gallery_image)) {
+      //   generateQrPayload.gallery_image.forEach((file, index) => {
+      //     formData.append(`gallery_image_${index}`, file);
+      //   });
+      // }
+      if (
+        generateQrPayload?.gallery_image &&
+        Array.isArray(generateQrPayload.gallery_image)
+      ) {
+        generateQrPayload.gallery_image.forEach((file) => {
+          formData.append("gallery_image[]", file);
+        });
       }
-      if (generateQrPayload?.links_image) {
-        formData.append("links_image", generateQrPayload?.links_image);
+
+      if (generateQrPayload?.linkslogo) {
+        formData.append("linkslogo", generateQrPayload?.linkslogo);
+      }
+      if (generateQrPayload?.social_logo) {
+        formData.append("social_logo", generateQrPayload?.social_logo);
+      }
+      if (generateQrPayload?.app_logo) {
+        formData.append("app_logo", generateQrPayload?.app_logo);
       }
       if (generateQrPayload?.vcard_image instanceof File) {
         formData.append("vcard_image", generateQrPayload?.vcard_image);
@@ -63,6 +88,9 @@ function BottomWrapperStages({
       }
       if (generateQrPayload?.event_image) {
         formData.append("event_image", generateQrPayload?.event_image);
+      }
+      if (generateQrPayload?.qrDesignLogo) {
+        formData.append("qrDesignLogo", generateQrPayload?.qrDesignLogo);
       }
 
       // Handle opening_hours_days
@@ -96,6 +124,30 @@ function BottomWrapperStages({
           }
         });
       }
+
+      let questions = generateQrPayload?.only_question;
+
+      questions = questions?.map((question) =>
+        question.trim().replace(/\s+/g, " ")
+      );
+
+      questions?.forEach((question, index) => {
+        formData.append(`only_question[${index}]`, question);
+      });
+
+      // formData.append("questions", JSON.stringify(generateQrPayload.questions));
+
+      const cleanQuestionsText = (questions) => {
+        console.log("questooo", questions);
+        return questions?.map((question) => ({
+          ...question,
+          text: question.text.trim().replace(/\s+/g, " "),
+        }));
+      };
+
+      const cleanedQuestions = cleanQuestionsText(generateQrPayload.questions);
+
+      formData.append("questions", JSON.stringify(cleanedQuestions));
 
       // Flatten and append existing payload data except 'landing_logo'
       Object.keys(generateQrPayload).forEach((key) => {
@@ -218,7 +270,7 @@ function BottomWrapperStages({
         } else if (
           key !== "landing_logo" &&
           key !== "gallery_image" &&
-          key !== "links_image" &&
+          key !== "linkslogo" &&
           key !== "vcard_image" &&
           key !== "business_logo" &&
           key !== "business_image" &&
@@ -227,9 +279,14 @@ function BottomWrapperStages({
           key !== "pdf_file" &&
           key !== "app_social" &&
           key !== "video_social" &&
-          key !== "landing_social"
+          key !== "landing_social" &&
+          key !== "all_links" &&
+          key !== "social_logo" &&
+          key !== "app_logo" &&
+          key !== "questions" &&
+          key !== "only_question" &&
+          key !== "qrDesignLogo"
         ) {
-          // Skip 'landing_logo' since it's already handled as a blob
           formData.append(key, generateQrPayload[key]);
         }
       });
@@ -238,31 +295,76 @@ function BottomWrapperStages({
         formData.append("pdf_file", generateQrPayload.pdf_file);
       }
 
-      // Handle all_links from generateQrPayload
       if (generateQrPayload?.all_links) {
         generateQrPayload.all_links.forEach((link, index) => {
           formData.append(`all_links[${index}][text]`, link.text);
           formData.append(`all_links[${index}][url]`, link.url);
+          formData.append(`all_links[${index}][image]`, link.image);
         });
       }
 
-      console.log("formData", formData);
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: test`, value);
-      }
+ 
 
       mutateQrCode(formData);
+
     } else {
       onNextClick();
     }
   };
 
   return (
-    <div className="bottom-wrapper-stages">
-      <button className="cancel" onClick={onCancelClick}>
-        {currentStage === 1 ? "Cancel" : "Back"}
-      </button>
-      <div className="stages-con">
+    <>
+      <div className="bottom-wrapper-stages">
+        <button className="cancel" onClick={onCancelClick}>
+          {currentStage === 1 ? "Cancel" : "Back"}
+        </button>
+        <div className="stages-con">
+          {stages.map((stage) => (
+            <div
+              key={stage.step}
+              className={`select-qr ${
+                currentStage === stage.step ? "active" : ""
+              }`}
+            >
+              <div className="wrap">
+                <h5 className={currentStage >= stage.step ? "active" : ""}>
+                  {stage.step}
+                </h5>
+                <p className={currentStage >= stage.step ? "active" : ""}>
+                  {stage.label}
+                </p>
+              </div>
+              {stage.step !== stages.length && <MdChevronRight />}
+            </div>
+          ))}
+        </div>
+
+        {/*  */}
+        {showNextButton && (
+          <div className="btn-next">
+            <button
+              className="next"
+              onClick={handleNextClick}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="loading-content">
+                  {/* <AiOutlineLoading3Quarters className="loading-spinner" /> */}
+                  <div className="loader"></div>
+                  <span>Loading...</span>
+                </div>
+              ) : isLastStage ? (
+                "Finish"
+              ) : (
+                "Next"
+              )}
+            </button>
+            {!isLoading && <MdChevronRight />}
+          </div>
+        )}
+      </div>
+
+      <div className="stages-con mobile" style={{display:"none"}}>
         {stages.map((stage) => (
           <div
             key={stage.step}
@@ -282,30 +384,7 @@ function BottomWrapperStages({
           </div>
         ))}
       </div>
-
-      {showNextButton && (
-        <div className="btn-next">
-          <button
-            className="next"
-            onClick={handleNextClick}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <div className="loading-content">
-                {/* <AiOutlineLoading3Quarters className="loading-spinner" /> */}
-                <div className="loader"></div>
-                <span>Loading...</span>
-              </div>
-            ) : isLastStage ? (
-              "Finish"
-            ) : (
-              "Next"
-            )}
-          </button>
-          {!isLoading && <MdChevronRight />}
-        </div>
-      )}
-    </div>
+    </>
   );
 }
 
