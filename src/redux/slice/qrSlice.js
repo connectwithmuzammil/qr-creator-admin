@@ -9,6 +9,7 @@ const initialState = {
   network_name: "",
   network_password: "",
   network_security_type: "",
+  hidden_network: false,
   //YOTUBE
   youtube_url: "",
   //PDF
@@ -183,6 +184,15 @@ const initialState = {
   warning: "",
   category: "",
   price: 0,
+  
+  year : 0,
+  drinking_temperature:"",
+  stored_temp_unopen:"",
+  stored_temp_open:"",
+  stored_days_open:"",
+  alcohol_type:"",
+  select_type_wine:"",
+  custom_type_wine:"",
 
   nutritional_image: "",
   food_image: "",

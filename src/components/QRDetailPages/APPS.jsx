@@ -25,132 +25,136 @@ const icons = {
   amazon: <AmazonSocial />,
 };
 
-const APPS = ({ qrData, setQrData }) => {
-  const [imagePreview, setImagePreview] = useState(null);
-
+const APPS = ({ localQrData, setLocalQrData, errors, setErrors }) => {
   //EDIT
   const location = useLocation();
-  console.log("LOCATIONURLSOCAPP", location);
 
   useEffect(() => {
     if (location.state?.qrData) {
       const qrDataFromLocation = location.state.qrData.data;
-      console.log("qrDataFromLocation", qrDataFromLocation);
-      setQrData(qrDataFromLocation);
+      // console.log("qrDataFromLocation", qrDataFromLocation);
+      setLocalQrData(qrDataFromLocation);
 
-      // If there's color data in qrData, ensure it's set correctly
+      // If there's color data in localQrData, ensure it's set correctly
       if (qrDataFromLocation?.color) {
-        setQrData((prevQrData) => ({
+        setLocalQrData((prevQrData) => ({
           ...prevQrData,
           color: qrDataFromLocation?.color,
         }));
       }
-
-      // if (qrDataFromLocation?.app_social) {
-      //   setQrData((prevQrData) => ({
-      //     ...prevQrData,
-      //     app_social: qrDataFromLocation?.app_social,
-      //   }));
-      // }
     }
-  }, [location.state, setQrData]);
+  }, [location.state, setLocalQrData]);
 
-  const handleImageUpload = (image) => {
-    console.log("Image uploaded:", image);
+  const handleImageUpload = (mediaData, name, file) => {
+    // console.log("Received media data", mediaData);
+    // console.log("Received media name", name);
+
+    setLocalQrData((prevData) => ({
+      ...prevData,
+      [name]: file,
+    }));
   };
 
-  const handleImageDelete = () => {
+  const handleImageDelete = (fieldName) => {
     console.log("Image deleted");
+    setLocalQrData((prevData) => ({
+      ...prevData,
+      [fieldName]: "",
+    }));
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setQrData((prevData) => ({
+    setLocalQrData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  };
-  const handleSocialIconChange = (iconName, url) => {
-    console.log("ICONS NAME, URL", iconName, url);
-    setQrData((prevData) => ({
-      ...prevData,
-      app_social: {
-        ...prevData.app_social,
-        [iconName]: url,
-      },
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
     }));
   };
 
   return (
-    <div className="app-page">
-      <div className="containerr">
-        <div className="left">
-          <AccordianComponent title={"Enter the name of your QR code"}>
-            <InputComponent
-              placeholder="e.g My QR code"
-              onChange={handleInputChange}
-              name="qr_name"
-              value={qrData.qr_name}
-            />
-          </AccordianComponent>
-          <AccordianComponent title={"Choose your design"}>
-            <CutsomColorPickerComp
-              colors={colors}
-              qrData={qrData}
-              setQrData={setQrData}
-            />
-          </AccordianComponent>
-          <AccordianComponent title={"App information"}>
-            <ImageUploadComponent
-              defaultImage={"/assets/images/default-img.png"}
-              onImageUpload={handleImageUpload}
-              onImageDelete={handleImageDelete}
-              label="Logo"
-            />
-            <InputComponent
-              label={"App name*"}
-              placeholder={"e.g. FitnessNow"}
-              name={"app_name"}
-              value={qrData?.app_name}
-              onChange={handleInputChange}
-            />
-            <InputComponent
-              label={"Developer/Company"}
-              placeholder={"e.g. App Developer PRO"}
-              name={"app_company"}
-              value={qrData?.app_company}
-              onChange={handleInputChange}
-            />
-            <InputComponent
-              label={"Description"}
-              placeholder={"e.g. The only fitness app you need"}
-              name={"app_description"}
-              value={qrData?.app_description}
-              onChange={handleInputChange}
-            />
-            <InputComponent
-              label={"Website"}
-              placeholder={"e.g. https://www.fitnessnow.com"}
-              name={"app_website"}
-              value={qrData?.app_website}
-              onChange={handleInputChange}
-            />
-          </AccordianComponent>
-          <AccordianComponent title={"Links to platforms"}>
-            <p className="social-con-content">Add at least one link to...</p>
-            <SocialIconsComp
-              icons={icons}
-              onIconClick={handleSocialIconChange}
-              className={"app-social"}
-              initialLinks={qrData?.app_social}
-            />
-          </AccordianComponent>
-        </div>
-        <div className="right">
-          <img src="/assets/images/phone-apps.png" alt="phone-apps" />
+    <>
+      <div className="app-page">
+        <div className="containerr">
+          <div className="left">
+            <AccordianComponent title={"Enter the name of your QR code"}>
+              <InputComponent
+                placeholder="e.g My QR code"
+                onChange={handleInputChange}
+                name="qr_name"
+                value={localQrData.qr_name}
+              />
+            </AccordianComponent>
+            <AccordianComponent title={"Choose your design"}>
+              <CutsomColorPickerComp
+                colors={colors}
+                qrData={localQrData}
+                setQrData={setLocalQrData}
+              />
+            </AccordianComponent>
+            <AccordianComponent title={"App information"}>
+              <ImageUploadComponent
+                defaultImage={"/assets/images/default-img.png"}
+                onImageUpload={handleImageUpload}
+                onImageDelete={handleImageDelete}
+                label="Logo"
+                name="app_logo"
+                localQrData={localQrData}
+                onEditImagePreview={localQrData?.app_logo}
+              />
+              <InputComponent
+                label={"App name*"}
+                placeholder={"e.g. FitnessNow"}
+                name={"app_name"}
+                value={localQrData?.app_name}
+                onChange={handleInputChange}
+                error={errors?.app_name}
+              />
+              <InputComponent
+                label={"Developer/Company"}
+                placeholder={"e.g. App Developer PRO"}
+                name={"app_company"}
+                value={localQrData?.app_company}
+                onChange={handleInputChange}
+              />
+              <InputComponent
+                label={"Description"}
+                placeholder={"e.g. The only fitness app you need"}
+                name={"app_description"}
+                value={localQrData?.app_description}
+                onChange={handleInputChange}
+              />
+              <InputComponent
+                label={"Website"}
+                placeholder={"e.g. https://www.fitnessnow.com"}
+                name={"app_website"}
+                value={localQrData?.app_website}
+                onChange={handleInputChange}
+                error={errors?.app_website}
+              />
+            </AccordianComponent>
+            <AccordianComponent title={"Links to platforms"}>
+              <p className="social-con-content">Add at least one link to...</p>
+              <SocialIconsComp
+                icons={icons}
+                className={"app-social"}
+                customStyle={"app-social"}
+                localQrData={localQrData}
+                setLocalQrData={setLocalQrData}
+                dataKey={"app_social"}
+              />
+            </AccordianComponent>
+          </div>
+          <div className="right">
+            <img src="/assets/images/phone-apps.png" alt="phone-apps" />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

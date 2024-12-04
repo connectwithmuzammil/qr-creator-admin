@@ -19,6 +19,8 @@ import {
   NotSelectedFrameCanvas,
 } from "../components/SVGIcon";
 
+const products = ["wine", "beer", "cigars", "coffee", "food", "product"];
+
 const AllQrList = () => {
   const location = useLocation();
   // console.log("singleUserQRCode",location);
@@ -81,7 +83,11 @@ const AllQrList = () => {
   const renderFrame = (selectedFrame, qrCodeData, data) => {
     const FrameComponent = frameComponents[selectedFrame];
     return FrameComponent ? (
-      <FrameComponent {...qrCodeData} data={data?.image_path} />
+      <FrameComponent
+        {...qrCodeData}
+        data={data?.image_path}
+        qrLogo={data?.qrDesignLogo}
+      />
     ) : null;
   };
 
@@ -138,14 +144,19 @@ const AllQrList = () => {
                   }
                   return 0;
                 });
-               
-                console.log("isLoading",isLoading);
+
+                // console.log("isLoading", isLoading);
+
                 return (
                   <div className="result-cardd" key={qrList?.id}>
                     {console.log("qrList", qrList)}
                     {sortedQRCodes.map((qrCode, index) => {
                       const selectedFrame = qrCode?.style?.frameName;
                       const isLoading = loadingMap[qrCode?.id];
+
+                      const matchedProduct = products.find(
+                        (product) => qrCode[product] === "true"
+                      );
                       return (
                         <div className="result-cardd-wrapper" key={index}>
                           {console.log("QRCOD,mnmE", qrCode)}
@@ -158,8 +169,20 @@ const AllQrList = () => {
                               )}
                             </div>
                             <div className="content-wrap">
-                              <h4>{qrCode?.type}</h4>
-                              <h3>{qrCode?.qr_name}</h3>
+                              <h4>
+                                {qrCode?.type === "social_media"
+                                  ? "Social Media"
+                                  : qrCode?.type === "image_gallery"
+                                  ? "Image Gallery"
+                                  : qrCode?.type === "business_page"
+                                  ? "Business"
+                                  : qrCode?.type}
+                              </h4>
+                              <h3>
+                                {qrCode?.type === "elabels"
+                                  ? matchedProduct.toUpperCase()
+                                  : qrCode?.qr_name}
+                              </h3>
                             </div>
                           </div>
                           <div className="two">

@@ -72,6 +72,9 @@
 .error-message {
   color: red;
   font-size: 0.875em;
+  display: flex;
+  gap: 2px;
+  align-items: center;
 }
 
 .input-comp-error {
@@ -83,7 +86,6 @@
   font-size: 12px;
   margin-top: 4px;
 }
-
 
 .loader-wrapper {
   display: flex;

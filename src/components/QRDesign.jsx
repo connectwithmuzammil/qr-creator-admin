@@ -95,8 +95,8 @@ const QRDesign = () => {
   const [dotColor, setDotColor] = useState(
     qrData?.style?.dotsColor || "#000000"
   );
-  const [CornerbgColor, setCornerBgColor] = useState(
-    qrData?.style?.backgroundColor || "#ffffff"
+  const [cornerBackgroundColor, setCornerBackgroundColor] = useState(
+    qrData?.style?.cornerBackgroundColor || "#ffffff"
   );
   const [cornerBorderColor, setCornerBorderColor] = useState(
     qrData?.style?.cornerBorderColor || "#000000"
@@ -113,9 +113,10 @@ const QRDesign = () => {
   const [frameColor, setFrameColor] = useState(
     qrData?.style?.frameColor || "#404040"
   );
-  const [frameBgColor, setFrameBgColor] = useState(
-    qrData?.style?.frameStyle || "#ffffff"
+  const [backgroundColor, setBackgroundColor] = useState(
+    qrData?.style?.backgroundColor
   );
+  // console.log("frameBgColor",frameBgColor)
   const [frameText, setFrameText] = useState(
     qrData?.style?.frameText || "Scan Me!"
   );
@@ -147,8 +148,8 @@ const QRDesign = () => {
   useEffect(() => {
     if (qrData && qrData.style) {
       qrData.style.dotsColor = dotColor;
-      qrData.style.cornerBackgroundColor = CornerbgColor;
-      qrData.style.backgroundColor = frameBgColor;
+      qrData.style.cornerBackgroundColor = cornerBackgroundColor;
+      qrData.style.backgroundColor = backgroundColor;
       qrData.style.cornerBorderColor = cornerBorderColor;
       qrData.style.cornerDotColor = cornerDotColor;
       qrData.style.frameColor = frameColor;
@@ -160,8 +161,8 @@ const QRDesign = () => {
     }
   }, [
     dotColor,
-    CornerbgColor,
-    frameBgColor,
+    cornerBackgroundColor,
+    backgroundColor,
     cornerBorderColor,
     frameColor,
     frameTextColor,
@@ -173,8 +174,8 @@ const QRDesign = () => {
     cornerDotColor,
   ]);
 
-  console.log("finalQrData", qrData);
-  console.log("selectedFrame", selectedFrame);
+  // console.log("finalQrData", qrData);
+  // console.log("selectedFrame", selectedFrame);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -198,6 +199,7 @@ const QRDesign = () => {
     setQRLogo(null);
   };
 
+  //Render Frame CANVAS
 
   const FRAME_COMPONENTS = {
     notSelectedFrame: NotSelectedFrameCanvas,
@@ -213,16 +215,16 @@ const QRDesign = () => {
     frame10: CanvaFrame10,
     frame11: CanvaFrame11,
   };
-  
+
   const renderFrame = () => {
     const FrameComponent = FRAME_COMPONENTS[selectedFrame] || null;
-  
+
     const commonProps = {
       frameColor,
-      frameBorderColor: frameBgColor,
+      backgroundColor,
       frameText,
       frameTextColor,
-      CornerbgColor,
+      cornerBackgroundColor,
       dotColor,
       cornerBorderColor,
       cornerDotColor,
@@ -230,206 +232,10 @@ const QRDesign = () => {
       selectedDotStyle,
       qrLogo: QRLogo,
     };
-  
+
     return FrameComponent ? <FrameComponent {...commonProps} /> : null;
   };
-  
-  //Render Frame CANVAS
-  // const renderFrame = () => {
-  //   switch (selectedFrame) {
-  //     case "notSelectedFrame":
-  //       return (
-  //         <NotSelectedFrameCanvas
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame1":
-  //       return (
-  //         <CanvaFrame1
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame2":
-  //       return (
-  //         <CanvaFrame2
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame3":
-  //       return (
-  //         <CanvaFrame3
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame4":
-  //       return (
-  //         <CanvaFrame4
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame5":
-  //       return (
-  //         <CanvaFrame5
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame6":
-  //       return (
-  //         <CanvaFrame6
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame7":
-  //       return (
-  //         <CanvaFrame7
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame8":
-  //       return (
-  //         <CanvaFrame8
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame9":
-  //       return (
-  //         <CanvaFrame9
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame10":
-  //       return (
-  //         <CanvaFrame10
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     case "frame11":
-  //       return (
-  //         <CanvaFrame11
-  //           frameColor={frameColor}
-  //           frameBorderColor={frameBgColor}
-  //           frameText={frameText}
-  //           frameTextColor={frameTextColor}
-  //           CornerbgColor={CornerbgColor}
-  //           dotColor={dotColor}
-  //           cornerBorderColor={cornerBorderColor}
-  //           cornerDotColor={cornerDotColor}
-  //           selectedCornerStyle={selectedCornerStyle}
-  //           selectedDotStyle={selectedDotStyle}
-  //           qrLogo={QRLogo}
-  //         />
-  //       );
-  //     // ... Add cases for other frames
-  //     default:
-  //       return null;
-  //   }
-  // };
+
   const handleCancelClick = () => {
     navigate(`/qr-editor/${type}`);
   };
@@ -582,8 +388,8 @@ const QRDesign = () => {
                                 />
                                 <ColorPickerComponent
                                   label="Background color"
-                                  color={frameBgColor}
-                                  setColor={setFrameBgColor}
+                                  color={backgroundColor}
+                                  setColor={setBackgroundColor}
                                 />
                               </div>
                             </div>
@@ -697,8 +503,8 @@ const QRDesign = () => {
 
                           <ColorPickerComponent
                             label="Background Color"
-                            color={CornerbgColor}
-                            setColor={setCornerBgColor}
+                            color={cornerBackgroundColor}
+                            setColor={setCornerBackgroundColor}
                           />
                         </div>
                       </div>

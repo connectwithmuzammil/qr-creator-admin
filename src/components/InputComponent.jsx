@@ -1,3 +1,5 @@
+import { FaChevronDown } from "react-icons/fa";
+
 export const InputComponent = ({
   label,
   placeholder,
@@ -62,16 +64,24 @@ export const InputSelectComponent = ({
   return (
     <div className="select-wrap-comp">
       <label>{label}</label>
-      <select name={name} value={value} onChange={onChange}>
-        <option value="" disabled>
-          {defaultOption}
-        </option>
-        {options.map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.label}
+      <div className="custom-select-container">
+        <select
+          name={name}
+          value={value}
+          onChange={onChange}
+          className="custom-select"
+        >
+          <option value="" disabled>
+            {defaultOption}
           </option>
-        ))}
-      </select>
+          {options.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <FaChevronDown className="custom-select-icon" />
+      </div>
     </div>
   );
 };

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import { InputComponent } from "./InputComponent";
 
-const EventSchedularComp = ({ qrData, setQrData, onChangeTime }) => {
+const EventSchedularComp = ({ qrData, setQrData, onChangeTime, isEdit }) => {
+  console.log("qrDataOnEdit",qrData)
   const [selectedTimeZone, setSelectedTimeZone] = useState(
     qrData.event_time_timezone || moment.tz.guess()
   );
@@ -77,23 +78,25 @@ const EventSchedularComp = ({ qrData, setQrData, onChangeTime }) => {
             <label>Start</label>
             <input
               type="date"
-              value={qrData.event_time_start.split("T")[0]} // Split to remove time part
+              value={qrData.event_time_start.split("T")[0]} 
               onChange={handleStartDateChange}
             />
           </div>
-          <input
-            type="time"
-            onChange={(e) =>
-              setQrData((prev) => ({
-                ...prev,
-                event_time_start: `${qrData.event_time_start.split("T")[0]}T${
-                  e.target.value
-                }:00.000Z`,
-              }))
-            }
-            // Display time based on selected format
-            step={timeFormat === "am/pm" ? 60 : 1} // Adjust step depending on format
-          />
+          {!isEdit && (
+            <input
+              type="time"
+              onChange={(e) =>
+                setQrData((prev) => ({
+                  ...prev,
+                  event_time_start: `${qrData.event_time_start.split("T")[0]}T${
+                    e.target.value
+                  }:00.000Z`,
+                }))
+              }
+              // Display time based on selected format
+              step={timeFormat === "am/pm" ? 60 : 1} // Adjust step depending on format
+            />
+          )}
         </div>
         <div className="input-con">
           <div className="input-wrap">
@@ -104,19 +107,21 @@ const EventSchedularComp = ({ qrData, setQrData, onChangeTime }) => {
               onChange={handleEndDateChange}
             />
           </div>
-          <input
-            type="time"
-            onChange={(e) =>
-              setQrData((prev) => ({
-                ...prev,
-                event_time_end: `${qrData.event_time_end.split("T")[0]}T${
-                  e.target.value
-                }:00.000Z`,
-              }))
-            }
-            // Display time based on selected format
-            step={timeFormat === "am/pm" ? 60 : 1} // Adjust step depending on format
-          />
+          {!isEdit && (
+            <input
+              type="time"
+              onChange={(e) =>
+                setQrData((prev) => ({
+                  ...prev,
+                  event_time_end: `${qrData.event_time_end.split("T")[0]}T${
+                    e.target.value
+                  }:00.000Z`,
+                }))
+              }
+              // Display time based on selected format
+              step={timeFormat === "am/pm" ? 60 : 1} // Adjust step depending on format
+            />
+          )}
         </div>
         <div className="timezone-con">
           <label className="label-allday">

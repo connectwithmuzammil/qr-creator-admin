@@ -85,16 +85,7 @@ const Video = ({ localQrData, setLocalQrData, errors, setErrors }) => {
       [name]: value,
     }));
   };
-  const handleSocialIconChange = (iconName, url) => {
-    console.log("ICONS NAME, URL", iconName, url);
-    setLocalQrData((prevData) => ({
-      ...prevData,
-      video_social: {
-        ...prevData.video_social,
-        [iconName]: url,
-      },
-    }));
-  };
+
   const handleVideoUpload = (video) => {
     console.log("VIDEO UPLOAD", video);
     // const videoUrl = URL.createObjectURL(video);

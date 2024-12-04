@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { InputCheckboxComponent, InputComponent } from "../InputComponent";
+import { InputCheckboxComponent, InputComponent, InputSelectComponent } from "../InputComponent";
 import ImageUploadComponent from "../ImageUploadComp";
 import { AccordianComponent } from "../AccordianComponent";
 import { useLocation } from "react-router-dom";
@@ -13,21 +13,45 @@ const products = [
   "food",
   "product",
 ];
+const options = [
+  { value: "cava", label: "Cava" },
+  { value: "champagne", label: "Champagne" },
+  { value: "cremant", label: "Cremant" },
+  { value: "fine_spirits", label: "Fine Spirits" },
+  { value: "grape_juice", label: "Grape Juice" },
+  { value: "ice_wine", label: "Ice Wine" },
+  { value: "liquor", label: "Liquor" },
+  { value: "prosecco", label: "Prosecco" },
+  { value: "red_wine", label: "Red Wine" },
+  { value: "rose_wine", label: "Rose Wine" },
+  { value: "semi_sparkling", label: "Semi Sparkling" },
+  { value: "sparkling", label: "Sparkling" },
+  { value: "spritzer", label: "Spritzer" },
+  { value: "white_wine", label: "White Wine" },
+  { value: "other", label: "Other" },
+];
 
 const ELabels = ({ localQrData, setLocalQrData }) => {
   const location = useLocation();
+
   const [showCustomQuestion, setShowCustomQuestion] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("Wine/Spirits");
   const [showRatings, setShowRatings] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-
-  console.log("checklocalqrdata", localQrData);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setLocalQrData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+  const handleSelectChange = (e) => {
+    const { name, value } = e.target;
+    setLocalQrData((prev) => ({
+      ...prev,
+      [name]: value,
+      customTypeWine: value === "other" ? prev.customTypeWine : "",
     }));
   };
 
@@ -91,6 +115,7 @@ const ELabels = ({ localQrData, setLocalQrData }) => {
       food: product === "food",
       product: product === "product",
     }));
+    // setLocalQrData(null);
   };
 
   // Use a separate effect to set selectedProduct based on localQrData changes
@@ -137,7 +162,7 @@ const ELabels = ({ localQrData, setLocalQrData }) => {
       ...prevData,
       [fieldName]: "",
     }));
-    // console.log(`Deleted image for field: ${fieldName}`);
+    console.log(`Deleted image for field: ${fieldName}`);
   };
 
   // console.log("lcaooqrdtata", localQrData);
@@ -165,35 +190,6 @@ const ELabels = ({ localQrData, setLocalQrData }) => {
             <div className="left">
               {selectedProduct === "Wine/Spirits" && (
                 <AccordianComponent title={"Wine/Spirits Details"}>
-                  <InputComponent
-                    label="Grape Variety"
-                    placeholder="Enter Grape Variety"
-                    value={localQrData?.grape_variety}
-                    name="grape_variety"
-                    onChange={handleInputChange}
-                  />
-                  <InputComponent
-                    label="Alcohol Volume"
-                    placeholder="Enter Alcohol Volume"
-                    type="number"
-                    value={localQrData?.alcohol_percentage}
-                    name="alcohol_percentage"
-                    onChange={handleInputChange}
-                  />
-                  <InputComponent
-                    label="Tasting Notes"
-                    placeholder="Enter Tasting Notes"
-                    value={localQrData?.task_notes}
-                    name="task_notes"
-                    onChange={handleInputChange}
-                  />
-                  <InputComponent
-                    label="Website"
-                    placeholder="Enter Website URL"
-                    value={localQrData?.website}
-                    name="website"
-                    onChange={handleInputChange}
-                  />
                   <ImageUploadComponent
                     defaultImage="/assets/images/default-img.png"
                     label="Wine/Spirits Image"
@@ -207,6 +203,172 @@ const ELabels = ({ localQrData, setLocalQrData }) => {
                     name="wine_image"
                     localQrData={localQrData}
                     onEditImagePreview={localQrData?.wine_image}
+                  />
+                  <InputComponent
+                    label="Product Name"
+                    placeholder="Enter Product Name"
+                    value={localQrData?.product_name}
+                    name="product_name"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="SKU"
+                    placeholder="Enter SKU"
+                    value={localQrData?.sku}
+                    name="sku"
+                    onChange={handleInputChange}
+                  />
+                  <div className="checkbox-group mb-3">
+                    <label>
+                      Alcoholic
+                      <input
+                        type="radio"
+                        name="alcohol_type"
+                        value="alcoholic"
+                        checked={localQrData?.alcohol_type === "alcoholic"}
+                        onChange={(e) =>
+                          setLocalQrData((prev) => ({
+                            ...prev,
+                            alcohol_type: e.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                    <label>
+                      Non-Alcoholic
+                      <input
+                        type="radio"
+                        name="alcohol_type"
+                        checked={localQrData?.alcohol_type === "non-alcoholic"}
+                        value="non-alcoholic"
+                        onChange={(e) =>
+                          setLocalQrData((prev) => ({
+                            ...prev,
+                            alcohol_type: e.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                  </div>
+                  <InputSelectComponent
+                    label={"Enter Type"}
+                    name="select_type_wine"
+                    value={localQrData?.select_type_wine}
+                    onChange={handleSelectChange}
+                    options={options}
+                  />
+                  {/* Show input field only if 'Other' is selected */}
+                  {localQrData?.select_type_wine === "other" && (
+                    <InputComponent
+                      type="text"
+                      label={"Enter Type"}
+                      placeholder="Enter custom type"
+                      value={localQrData?.custom_type_wine}
+                      name="custom_type_wine"
+                      onChange={handleInputChange}
+                    />
+                  )}
+                  <InputComponent
+                    label="Flavour"
+                    placeholder="Enter Flavour"
+                    value={localQrData?.flavour}
+                    name="flavour"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="Grape Variety"
+                    placeholder="Enter Grape Variety"
+                    value={localQrData?.grape_variety}
+                    name="grape_variety"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="Country of Origin"
+                    placeholder="Enter Country Origin"
+                    value={localQrData?.where_it_is_made}
+                    name="where_it_is_made"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="Alcohol Content"
+                    placeholder="Enter Alcohol Content"
+                    type="number"
+                    value={localQrData?.alcohol_percentage}
+                    name="alcohol_percentage"
+                    onChange={handleInputChange}
+                  />
+
+                  <InputComponent
+                    label="Tasting Notes"
+                    placeholder="Enter Tasting Notes"
+                    value={localQrData?.task_notes}
+                    name="task_notes"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="Year"
+                    placeholder="Enter Year"
+                    type="number"
+                    value={localQrData?.year}
+                    name="year"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="Description"
+                    placeholder="Enter Description"
+                    value={localQrData?.description}
+                    name="description"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="Drinking Temperature"
+                    placeholder="Enter Drinking Temperature"
+                    value={localQrData?.drinking_temperature}
+                    name="drinking_temperature"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="Stored Temperature Unopened"
+                    placeholder="Enter Stored Temperature Unopened"
+                    value={localQrData?.stored_temp_unopen}
+                    name="stored_temp_unopen"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="Stored Temperature Opened"
+                    placeholder="Enter Stored Temperature Opened"
+                    value={localQrData?.stored_temp_open}
+                    name="stored_temp_open"
+                    onChange={handleInputChange}
+                  />
+                  <InputComponent
+                    label="Stored for (days) after opening"
+                    placeholder="Enter Stored for (days) after opening"
+                    value={localQrData?.stored_days_open}
+                    name="stored_days_open"
+                    // type="number"
+                    onChange={handleInputChange}
+                  />
+                  <ImageUploadComponent
+                    defaultImage="/assets/images/default-img.png"
+                    label="Nutritional Image"
+                    onImageUpload={(imageUrl, name, file) => {
+                      setLocalQrData((prev) => ({
+                        ...prev,
+                        [name]: file,
+                      }));
+                    }}
+                    onImageDelete={handleImageDelete}
+                    name="nutrition_image"
+                    localQrData={localQrData}
+                    onEditImagePreview={localQrData?.nutrition_image}
+                  />
+                  <InputComponent
+                    label="Website"
+                    placeholder="Enter Website URL"
+                    value={localQrData?.website}
+                    name="website"
+                    onChange={handleInputChange}
                   />
                 </AccordianComponent>
               )}
